@@ -1,0 +1,2890 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kaveez Automation // WhatsApp Bot</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ========================================================
+           DESIGN TOKENS & SYSTEM VARIABLES (Dark & White Themes)
+           ======================================================== */
+        :root,
+        [data-theme="dark"] {
+            --bg: #000000;
+            --surface: #070709;
+            --surface-card: #0c0c0f;
+            --surface-card-hover: #121217;
+            --surface-pill: rgba(18, 18, 22, 0.85);
+
+            --text-main: #ffffff;
+            --text-muted: #888892;
+            --text-subtle: #52525c;
+            --text-inverse: #000000;
+
+            --border-faint: rgba(255, 255, 255, 0.1);
+            --border-light: rgba(255, 255, 255, 0.22);
+            --border-hover: rgba(255, 255, 255, 0.45);
+
+            --btn-bg: #ffffff;
+            --btn-text: #000000;
+            --btn-hover: #e0e0e0;
+
+            --grid-line: rgba(255, 255, 255, 0.03);
+            --glow-color: rgba(255, 255, 255, 0.08);
+            --img-blend: screen;
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --earth-mask-top: rgba(0, 0, 0, 0.95);
+        }
+
+        [data-theme="light"] {
+            --bg: #f8f9fa;
+            --surface: #ffffff;
+            --surface-card: #ffffff;
+            --surface-card-hover: #f1f3f5;
+            --surface-pill: rgba(255, 255, 255, 0.9);
+
+            --text-main: #09090b;
+            --text-muted: #4b5563;
+            --text-subtle: #9ca3af;
+            --text-inverse: #ffffff;
+
+            --border-faint: rgba(0, 0, 0, 0.1);
+            --border-light: rgba(0, 0, 0, 0.22);
+            --border-hover: rgba(0, 0, 0, 0.5);
+
+            --btn-bg: #09090b;
+            --btn-text: #ffffff;
+            --btn-hover: #27272a;
+
+            --grid-line: rgba(0, 0, 0, 0.035);
+            --glow-color: rgba(0, 0, 0, 0.04);
+            --img-blend: normal;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            --earth-mask-top: rgba(248, 249, 250, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', 'Noto Sans Sinhala', -apple-system, sans-serif;
+            line-height: 1.5;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--text-main);
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Technical Mono Typography */
+        .tech-mono {
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-bracket {
+            position: relative;
+        }
+
+        .tech-bracket::before,
+        .tech-bracket::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border: 1px solid var(--border-light);
+            pointer-events: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .tech-bracket::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .tech-bracket::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .tech-bracket:hover::before,
+        .tech-bracket:hover::after {
+            border-color: var(--text-main);
+        }
+
+        /* Grid Background Pattern */
+        .grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-size: 80px 80px;
+            background-image:
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 85%);
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 85%);
+        }
+
+        /* ========================================================
+           NAVBAR (1:1 with Screenshot Header)
+           ======================================================== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 40px;
+            border-bottom: 1px solid var(--border-faint);
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .nav-brand-group {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .brand-logo {
+            font-size: 1.45rem;
+            font-weight: 600;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .brand-logo span {
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .brand-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border-faint);
+        }
+
+        .brand-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            line-height: 1.25;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            max-width: 125px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.25s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Pill Outline Button */
+        .btn-pill-outline {
+            background: transparent;
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            padding: 9px 22px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 9999px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-pill-outline:hover {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border-color: var(--btn-bg);
+            transform: translateY(-1px);
+        }
+
+        /* Secondary Icon Buttons (Theme & Lang) */
+        .btn-icon-toggle {
+            background: transparent;
+            border: 1px solid var(--border-faint);
+            color: var(--text-muted);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.25s ease;
+        }
+
+        .btn-icon-toggle:hover {
+            color: var(--text-main);
+            border-color: var(--border-light);
+        }
+
+        .lang-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            border: 1px solid var(--border-faint);
+            background: var(--surface);
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .lang-badge:hover {
+            border-color: var(--border-light);
+        }
+
+        /* Mobile Hamburger */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        /* ========================================================
+           HERO SECTION (Exact 3-Column Omni-v Layout)
+           ======================================================== */
+        .hero-section {
+            position: relative;
+            min-height: 88vh;
+            border-bottom: 1px solid var(--border-faint);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: 40px 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1.4fr 320px;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Hero Left Column */
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-badge::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--border-light);
+        }
+
+        .hero-title {
+            font-size: clamp(2.8rem, 5.2vw, 4.8rem);
+            font-weight: 500;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            color: var(--text-main);
+        }
+
+        .hero-title span {
+            color: var(--text-muted);
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 440px;
+            margin-bottom: 36px;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-step-tracker {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-subtle);
+            letter-spacing: 2px;
+            border-top: 1px solid var(--border-faint);
+            padding-top: 24px;
+            max-width: 380px;
+        }
+
+        .tracker-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-main);
+            box-shadow: 0 0 10px var(--text-main);
+        }
+
+        .tracker-line {
+            width: 30px;
+            height: 1px;
+            background: var(--border-light);
+        }
+
+        .tracker-active {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* Hero Center Column (Floating Robot Arm & Illuminated Codex Cube) */
+        .hero-center {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 560px;
+        }
+
+        .hero-center-glow {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+            filter: blur(50px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-image-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .hero-main-img {
+            max-width: 100%;
+            max-height: 540px;
+            object-fit: contain;
+            mix-blend-mode: var(--img-blend);
+            animation: slowHover 7s ease-in-out infinite;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+            transition: transform 0.5s ease;
+        }
+
+        @keyframes slowHover {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-16px) rotate(0.5deg);
+            }
+        }
+
+        /* Tech HUD coordinates over hero */
+        .hud-tag {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--text-subtle);
+            letter-spacing: 1px;
+            pointer-events: none;
+        }
+
+        .hud-tag.top-right {
+            top: 20px;
+            right: 20px;
+        }
+
+        .hud-tag.bottom-left {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        /* Hero Right Column (Specs & Visualizer Card) */
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 500px;
+            padding-left: 30px;
+            border-left: 1px solid var(--border-faint);
+        }
+
+        .spec-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .spec-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .spec-item::before {
+            content: '•';
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .spec-highlight {
+            color: var(--text-main);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* Interactive Real-World Intelligence Card */
+        .mini-intel-card {
+            border: 1px solid var(--border-faint);
+            background: var(--surface-card);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .mini-intel-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+        }
+
+        .intel-wave-canvas {
+            width: 100%;
+            height: 90px;
+            background: transparent;
+            margin: 12px 0;
+            display: block;
+        }
+
+        .intel-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-main);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .intel-card-footer i {
+            font-size: 0.75rem;
+            transition: transform 0.3s ease;
+        }
+
+        .mini-intel-card:hover .intel-card-footer i {
+            transform: translate(2px, -2px);
+        }
+
+        /* ========================================================
+           OUR TECHNOLOGY SECTION (Exploded Cube & Precision Lens)
+           ======================================================== */
+        .tech-section {
+            border-bottom: 1px solid var(--border-faint);
+            position: relative;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr 1fr;
+            min-height: 650px;
+        }
+
+        /* Technology Left Column */
+        .tech-info-col {
+            padding: 80px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid var(--border-faint);
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .tech-heading {
+            font-size: clamp(2.5rem, 3.8vw, 3.6rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+            color: var(--text-main);
+        }
+
+        .tech-paragraph {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .tech-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-main);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: gap 0.25s ease;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .tech-link:hover {
+            gap: 14px;
+        }
+
+        /* Technology Center Column (Exploded View with Interactive Callouts) */
+        .tech-center-col {
+            position: relative;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, var(--glow-color) 0%, transparent 70%);
+            border-right: 1px solid var(--border-faint);
+            overflow: hidden;
+        }
+
+        .exploded-img-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .exploded-img {
+            width: 100%;
+            height: auto;
+            max-height: 520px;
+            object-fit: contain;
+            mix-blend-mode: var(--img-blend);
+            transition: transform 0.5s ease;
+        }
+
+        /* Technical Callout Pointers (Matching Screenshot exactly) */
+        .callout-pointer {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            color: var(--text-main);
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .callout-line {
+            width: 45px;
+            height: 1px;
+            background: var(--border-light);
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        .callout-pointer:hover .callout-line {
+            width: 60px;
+            background: var(--text-main);
+        }
+
+        .callout-text h5 {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: 1px;
+        }
+
+        .callout-text p {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .pointer-top {
+            top: 22%;
+            right: 8%;
+        }
+
+        .pointer-mid {
+            top: 48%;
+            right: 4%;
+        }
+
+        .pointer-bot {
+            bottom: 22%;
+            right: 8%;
+        }
+
+        /* Technology Right Column (Precision Glass Conduit) */
+        .tech-right-col {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            overflow: hidden;
+            background: var(--surface);
+        }
+
+        .precision-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: right center;
+            transform-origin: right center;
+            mix-blend-mode: var(--img-blend);
+            opacity: 0.85;
+            transition: transform 0.7s ease, opacity 0.5s ease;
+        }
+
+        .tech-right-col:hover .precision-img {
+            transform: scale(1.04);
+            opacity: 1;
+        }
+
+        .precision-overlay {
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(to top, var(--bg) 15%, transparent 100%);
+            padding-top: 60px;
+            margin: -40px;
+            padding: 40px;
+        }
+
+        .precision-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+            line-height: 1.25;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .precision-arrow-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border-light);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .tech-right-col:hover .precision-arrow-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border-color: var(--btn-bg);
+        }
+
+        /* ========================================================
+           PRODUCT LINEUP BENTO GRID (Exact 4 Cards + 1 Tall Card)
+           ======================================================== */
+        .lineup-section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--border-faint);
+            position: relative;
+        }
+
+        .lineup-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) 1.2fr;
+            gap: 20px;
+            margin-top: 36px;
+        }
+
+        /* Lineup Individual Cards */
+        .lineup-card {
+            border: 1px solid var(--border-faint);
+            background: var(--surface-card);
+            padding: 24px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+        }
+
+        .lineup-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            background: var(--surface-card-hover);
+        }
+
+        .card-header {
+            margin-bottom: 16px;
+        }
+
+        .card-name {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-subtext {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .card-visual {
+            width: 100%;
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto 0;
+            position: relative;
+        }
+
+        .card-visual img {
+            max-width: 90%;
+            max-height: 100%;
+            object-fit: contain;
+            mix-blend-mode: var(--img-blend);
+            transition: transform 0.4s ease;
+        }
+
+        .lineup-card:hover .card-visual img {
+            transform: scale(1.1);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .card-arrow-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--border-faint);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            transition: all 0.25s ease;
+        }
+
+        .lineup-card:hover .card-arrow-circle {
+            border-color: var(--text-main);
+            color: var(--text-main);
+            transform: translate(2px, -2px);
+        }
+
+        /* 5th Tall Feature Card on Right */
+        .lineup-hero-card {
+            border: 1px solid var(--border-faint);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .lineup-hero-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .lhc-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: transform 0.6s ease, opacity 0.4s ease;
+        }
+
+        .lineup-hero-card:hover .lhc-bg {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        .lhc-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .lhc-title {
+            font-size: clamp(1.4rem, 2vw, 1.8rem);
+            font-weight: 500;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        /* ========================================================
+           OUR PROCESS & CURVED EARTH HORIZON (Video & Pair Engine)
+           ======================================================== */
+        .process-section {
+            padding: 90px 40px 0 40px;
+            position: relative;
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .process-header-grid {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 50px;
+            margin-bottom: 70px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .process-title-col h2 {
+            font-size: clamp(2.4rem, 4vw, 3.5rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            color: var(--text-main);
+            margin-top: 12px;
+        }
+
+        .process-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            border-top: 1px solid var(--border-faint);
+            padding-top: 24px;
+        }
+
+        .step-block {
+            display: flex;
+            flex-direction: column;
+            padding-left: 20px;
+            border-left: 1px solid var(--border-light);
+            transition: border-color 0.3s ease;
+        }
+
+        .step-block:hover {
+            border-left-color: var(--text-main);
+        }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .step-name {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .step-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        /* ========================================================
+           CURVED EARTH HORIZON & VIDEO CANVAS
+           ======================================================== */
+        .earth-horizon-stage {
+            position: relative;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 60px;
+            overflow: hidden;
+            margin: 0 -40px;
+            border-top: 1px solid var(--border-faint);
+        }
+
+        /* Video / Graphic Background of Earth */
+        .earth-video-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.45;
+            filter: contrast(1.1) brightness(0.9);
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Earth Curved Edge Gradient Mask */
+        .earth-mask-layer {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 120%, transparent 35%, var(--earth-mask-top) 85%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Atmospheric Glow Arc */
+        .atmosphere-arc {
+            position: absolute;
+            bottom: -350px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1600px;
+            height: 700px;
+            border-radius: 50%;
+            border-top: 2px solid rgba(80, 160, 255, 0.4);
+            box-shadow: 0 -20px 80px rgba(50, 140, 255, 0.25);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        /* Horizon Center Text & Pairing Engine */
+        .horizon-center-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 680px;
+            padding: 0 20px;
+            transform: translateY(-90px);
+        }
+
+        .horizon-motto {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* Capsule Form */
+        .pair-capsule-form {
+            display: flex;
+            align-items: center;
+            background: var(--surface-pill);
+            border: 1px solid var(--border-light);
+            border-radius: 9999px;
+            padding: 6px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            width: 460px;
+            max-width: 92vw;
+            margin: 0 auto;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .pair-capsule-form:focus-within {
+            border-color: var(--text-main);
+            box-shadow: 0 0 25px var(--glow-color);
+        }
+
+        .prefix-badge {
+            padding: 10px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            border-right: 1px solid var(--border-faint);
+            user-select: none;
+        }
+
+        .phone-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 18px;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            outline: none;
+            letter-spacing: 1px;
+            min-width: 120px;
+        }
+
+        .phone-field::placeholder {
+            color: var(--text-subtle);
+        }
+
+        .btn-submit-code {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            padding: 12px 26px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            box-shadow: 0 0 15px rgba(0, 255, 128, 0.4);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 10px rgba(0, 255, 128, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(0, 255, 128, 0.6);
+            }
+
+            100% {
+                box-shadow: 0 0 10px rgba(0, 255, 128, 0.2);
+            }
+        }
+
+        .btn-submit-code:hover {
+            background: var(--btn-hover);
+            transform: scale(1.04);
+            box-shadow: 0 0 35px rgba(0, 255, 128, 0.8);
+        }
+
+        /* Result Display Box */
+        .result-code-card {
+            display: none;
+            margin-top: 32px;
+            background: rgba(10, 15, 20, 0.7);
+            border: 1px solid rgba(0, 255, 128, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 128, 0.1);
+            animation: fadeInCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes fadeInCard {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .code-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: 8px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 14px;
+            user-select: all;
+        }
+
+        .pair-instruction {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* ========================================================
+           FOOTER (Exact Omni-v Layout)
+           ======================================================== */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 100px 60px 40px 60px;
+            background: linear-gradient(to bottom, var(--bg) 0%, rgba(5, 9, 7, 0.7) 30%, rgba(5, 9, 7, 0.9) 100%), url('assets/earth_horizon.jpg') no-repeat center bottom;
+            background-size: cover;
+            position: relative;
+            z-index: 10;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            min-height: 250px;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        .footer-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.25s ease;
+        }
+
+        .footer-nav a:hover {
+            color: var(--text-main);
+        }
+
+        /* ========================================================
+           SCROLL REVEAL ANIMATIONS (Lag-Free IntersectionObserver)
+           ======================================================== */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
+
+        /* Toast Notification */
+        .toast-bubble {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 10px 22px;
+            border-radius: 9999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .toast-bubble.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Utility Hide */
+        .hidden {
+            display: none !important;
+        }
+
+
+        .pairing-wrapper {
+            border-bottom: 1px solid var(--border-faint);
+            background: var(--bg);
+        }
+
+        .pairing-wrapper .earth-horizon-stage {
+            margin: 0;
+            border-top: none;
+            min-height: 400px;
+            padding-bottom: 40px;
+        }
+
+        /* ========================================================
+           MOVIE FEATURE SECTION
+           ======================================================== */
+        .movie-feature-section {
+            position: relative;
+            padding: 100px 24px;
+            border-bottom: 1px solid var(--border-faint);
+            background: radial-gradient(circle at right center, rgba(14, 164, 91, 0.04) 0%, transparent 50%);
+            overflow: hidden;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .movie-text-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .movie-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .movie-title {
+            font-size: 3.2rem;
+            line-height: 1.1;
+            font-weight: 500;
+            letter-spacing: -1px;
+        }
+
+        .movie-title span {
+            color: var(--text-subtle);
+        }
+
+        .movie-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 480px;
+        }
+
+        .command-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border-faint);
+            padding: 12px 20px;
+            border-radius: 30px;
+            width: fit-content;
+            margin-top: 10px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .command-box code {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Chat Mockup */
+        .chat-mockup-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .chat-mockup {
+            background: #0b141a;
+            border: 1px solid var(--border-faint);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 2;
+        }
+
+        .chat-bubble {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            max-width: 85%;
+            position: relative;
+        }
+
+        .chat-user {
+            align-self: flex-end;
+            background: #005c4b;
+            color: #e9edef;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bot {
+            align-self: flex-start;
+            background: #202c33;
+            color: #e9edef;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-media {
+            background: #111b21;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .media-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .media-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .media-name {
+            font-weight: 500;
+            color: #e9edef;
+            font-size: 0.9rem;
+        }
+
+        .media-size {
+            font-size: 0.75rem;
+            color: #8696a0;
+        }
+
+        .chat-time {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .chat-mockup-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(14, 164, 91, 0.15) 0%, transparent 60%);
+            filter: blur(40px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ========================================================
+           NEXUS AI SECTION
+           ======================================================== */
+        .ai-feature-section {
+            position: relative;
+            padding: 100px 24px;
+            border-bottom: 1px solid var(--border-faint);
+            background: radial-gradient(circle at left center, rgba(83, 189, 235, 0.04) 0%, transparent 50%);
+            overflow: hidden;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        @media (min-width: 901px) {
+            .ai-grid .chat-mockup-wrapper {
+                order: 1;
+            }
+
+            .ai-grid .movie-text-content {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .movie-grid,
+            .ai-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 50px;
+            }
+
+            .ai-grid .movie-text-content {
+                order: 1;
+            }
+
+            .ai-grid .chat-mockup-wrapper {
+                order: 2;
+            }
+
+            .movie-text-content {
+                align-items: center;
+            }
+
+            .movie-title {
+                font-size: 2.6rem;
+            }
+        }
+
+        /* ========================================================
+           RESPONSIVE DESIGN (Zero Overlaps, 100% Bug-Free)
+           ======================================================== */
+        @media (max-width: 1200px) {
+            .hero-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hero-right {
+                display: none;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr 1.2fr;
+            }
+
+            .tech-right-col {
+                display: none;
+            }
+
+            .lineup-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .lineup-hero-card {
+                grid-column: span 2;
+                min-height: 240px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 18px 24px;
+            }
+
+            .container {
+                padding: 0 24px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-badge,
+            .hero-cta-group,
+            .hero-step-tracker {
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-center {
+                height: 400px;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-info-col {
+                padding: 60px 24px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-faint);
+            }
+
+            .callout-pointer {
+                display: none;
+            }
+
+            .process-header-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .process-steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .process-section {
+                padding: 60px 24px 0 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 16px 16px;
+                gap: 10px;
+            }
+
+            .brand-logo {
+                font-size: 1.15rem;
+            }
+
+            .brand-subtitle,
+            .brand-divider {
+                display: none;
+            }
+
+            .nav-brand-group {
+                gap: 10px;
+            }
+
+            .nav-actions {
+                gap: 10px;
+            }
+
+            #nav-cta-text {
+                display: none;
+            }
+
+            .btn-pill-outline {
+                padding: 8px 12px;
+            }
+
+            .btn-icon-toggle {
+                width: 32px;
+                height: 32px;
+                font-size: 0.75rem;
+            }
+
+            .lang-badge {
+                padding: 6px 10px;
+                font-size: 0.65rem;
+            }
+
+            .hero-section {
+                padding: 20px 0;
+            }
+
+            .hero-title {
+                font-size: clamp(2rem, 8vw, 2.5rem);
+            }
+
+            .hero-desc {
+                font-size: 0.95rem;
+            }
+
+            .hero-center {
+                height: 300px;
+            }
+
+            .lineup-section {
+                padding: 60px 0;
+            }
+
+            .lineup-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lineup-hero-card {
+                grid-column: span 1;
+            }
+
+            .process-steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pair-capsule-form {
+                flex-direction: column;
+                border-radius: 16px;
+                padding: 12px;
+                gap: 10px;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .prefix-badge {
+                border-right: none;
+                border-bottom: 1px solid var(--border-faint);
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+            }
+
+            .phone-field {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+            }
+
+            .btn-submit-code {
+                width: 100%;
+                justify-content: center;
+                padding: 14px;
+            }
+
+            .code-display {
+                font-size: clamp(1.5rem, 6vw, 2rem);
+                letter-spacing: 4px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 60px 20px 40px 20px;
+            }
+
+            .footer-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Scroll Progress Indicator -->
+    <div id="scroll-progress"></div>
+
+    <!-- Navigation Bar (1:1 with Screenshot Header) -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand-group">
+                <a href="#" class="brand-logo">
+                    Kaveez<span>Automation</span>
+                </a>
+                <div class="brand-divider"></div>
+                <div class="brand-subtitle" id="nav-tagline">
+                    WHATSAPP AUTOMATION PLATFORM
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="https://wa.me/94719388481" target="_blank">Developer Contact</a></li>
+                <li><a href="https://kaveesha.top/" target="_blank">Developer Portfolio</a></li>
+                <li><a href="https://moviestream.top/" target="_blank">Movie Download Web</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!-- Theme Toggle Button (Dark & Light) -->
+                <button class="btn-icon-toggle" id="theme-toggle" title="Switch Theme (Dark / Light)"
+                    aria-label="Toggle theme">
+                    <i class="fa-solid fa-sun" id="theme-icon"></i>
+                </button>
+
+                <!-- Language Toggle Button (English & Sinhala) -->
+                <button class="lang-badge" id="lang-toggle" title="Switch Language">
+                    <span id="lang-indicator">සිංහල</span>
+                </button>
+
+                <!-- Capsule CTA Button -->
+                <a href="#connect" class="btn-pill-outline" id="nav-cta-btn"
+                    style="border-color: #25D366; color: #25D366; box-shadow: 0 0 15px rgba(37, 211, 102, 0.2);">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 1rem;"></i>
+                    <span id="nav-cta-text" style="font-weight: 600;">Link WhatsApp</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ========================================================
+             HERO SECTION (Robot Arm & Illuminated Cube Layout)
+             ======================================================== -->
+        <section class="hero-section" id="hero">
+            <div class="grid-pattern"></div>
+
+            <div class="container hero-grid">
+
+                <!-- Left Column -->
+                <div class="hero-left reveal-element">
+                    <div class="hero-badge" id="hero-badge-text">
+                        BUILT FOR REAL IMPACT
+                    </div>
+
+                    <h1 class="hero-title" id="h-title-en">
+                        Intelligent<br>WhatsApp Bot<br><span>Systems.</span>
+                    </h1>
+                    <h1 class="hero-title hidden" id="h-title-si">
+                        බුද්ධිමත්<br>WhatsApp Bot<br><span>පද්ධතිය.</span>
+                    </h1>
+
+                    <p class="hero-desc" id="h-desc-en">
+                        Automate your chats, fetch social media instantly, prevent deleted messages, convert images to
+                        PDFs, and auto-react to status updates. The ultimate all-in-one assistant.
+                    </p>
+                    <p class="hero-desc hidden" id="h-desc-si">
+                        කණ්ඩායම් පණිවිඩ යැවීම, මැකූ පණිවිඩ නැවත බැලීම, Social Media වලින් වීඩියෝ බාගත කිරීම, PDF සෑදීම
+                        සහ Status වලට Auto React කිරීම ඇතුළු සියලුම දේ එකම තැනකින්.
+                    </p>
+
+                    <div class="hero-cta-group">
+                        <a href="#lineup" class="btn-pill-outline tech-bracket" id="hero-cta-btn">
+                            <span id="h-cta-text">Explore Products</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.7rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- Bottom Step Tracker -->
+                    <div class="hero-step-tracker">
+                        <div class="tracker-dot"></div>
+                        <div class="tracker-line"></div>
+                        <span class="tracker-active">01</span>
+                        <div class="tracker-line"></div>
+                        <span id="h-tracker-sub">SENSE • THINK • ACT</span>
+                    </div>
+                </div>
+
+                <!-- Center Column (Floating Robot Arm & Glowing Codex Cube) -->
+                <div class="hero-center reveal-element delay-1">
+                    <div class="hero-center-glow"></div>
+                    <div class="hud-tag top-right">SEC_01 // 34.05°N</div>
+                    <div class="hud-tag bottom-left">CORE_STATUS // NOMINAL</div>
+
+                    <div class="hero-image-wrap">
+                        <img src="assets/hero_kaveez.jpg" alt="Kaveez Automation System" class="hero-main-img">
+                    </div>
+                </div>
+
+                <!-- Right Column (Specs & Interactive Visualizer Card) -->
+                <div class="hero-right reveal-element delay-2">
+                    <div class="tech-spec-box">
+                        <div class="tech-mono" style="margin-bottom: 14px;" id="sys-cap-head">SYSTEM CAPABILITIES</div>
+                        <ul class="spec-list">
+                            <li class="spec-item" id="sys-cap-1">Anti-Delete Message</li>
+                            <li class="spec-item" id="sys-cap-2">Anti-View Once</li>
+                            <li class="spec-item" id="sys-cap-3">Personal AI Chat</li>
+                            <li class="spec-item" id="sys-cap-4">Direct Movie Downloads</li>
+                            <li class="spec-item spec-highlight" id="sys-cap-5">Auto Status React</li>
+                        </ul>
+                    </div>
+
+                    <!-- Mini Visualizer Card -->
+                    <div class="mini-intel-card tech-bracket">
+                        <div class="tech-mono">REAL-TIME SIGNAL</div>
+                        <canvas id="audio-wave-canvas" class="intel-wave-canvas" width="240" height="90"></canvas>
+                        <div class="intel-card-footer">
+                            <span id="h-intel-label">REAL-WORLD INTELLIGENCE</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             PAIRING SECTION (Moved here for better UX)
+             ======================================================== -->
+        <section class="pairing-wrapper" style="padding-bottom: 40px;">
+            <!-- Curved Earth Horizon Stage with Video Loop & Pairing Input -->
+            <div class="earth-horizon-stage" id="connect">
+
+                <!-- NASA Earth Orbit Video Background -->
+                <video class="earth-video-layer" autoplay loop muted playsinline preload="auto"
+                    poster="assets/earth_horizon.jpg">
+                    <source src="assets/video_1.mp4" type="video/mp4">
+                </video>
+
+                <!-- Masks and Atmosphere Arc -->
+                <div class="earth-mask-layer"></div>
+                <div class="atmosphere-arc"></div>
+
+                <!-- Center Content: Motto & Pairing Generator -->
+                <div class="horizon-center-content reveal-element">
+                    <div class="horizon-motto" id="horizon-motto-text">A MORE CAPABLE TOMORROW.</div>
+
+                    <!-- Pairing Form -->
+                    <form id="pairing-form" class="pair-capsule-form" autocomplete="off">
+                        <div class="prefix-badge">+</div>
+                        <input type="tel" id="user-phone" class="phone-field" placeholder="94 7X XXX XXXX" required>
+                        <button type="submit" id="btn-get-code" class="btn-submit-code">
+                            <span id="btn-pair-text">Link WhatsApp Bot</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square" id="btn-pair-icon"></i>
+                        </button>
+                    </form>
+
+                    <!-- Code Result Card -->
+                    <div id="code-result-container" class="result-code-card">
+                        <div id="pairing-code-content">
+                            <div class="tech-mono" style="margin-bottom: 8px;">PAIRING CODE GENERATED</div>
+                            <div id="display-code" class="code-display">KAVZ-8924</div>
+                            <p class="pair-instruction" id="pair-instruction-text">
+                                Open WhatsApp > <b>Linked Devices</b> > <b>Link with phone number</b> > Enter this code.
+                            </p>
+                            <button type="button" class="btn-pill-outline" id="copy-code-btn">
+                                <i class="fa-regular fa-copy"></i>
+                                <span id="copy-btn-text">Copy Code</span>
+                            </button>
+                        </div>
+                        <div id="pairing-success-content" style="display: none; text-align: center; padding: 20px;">
+                            <i class="fa-solid fa-circle-check"
+                                style="color: var(--accent); font-size: 3rem; margin-bottom: 15px;"></i>
+                            <h3 style="color: white; margin-bottom: 10px;">Congratulations! 🎉</h3>
+                            <p style="color: var(--text-muted);">Your WhatsApp is now connected to the Nexus AI Bot
+                                successfully.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             OUR TECHNOLOGY SECTION (Exploded Diagram & Precision Lens)
+             ======================================================== -->
+        <section class="tech-section" id="technology">
+            <div class="tech-grid">
+
+                <!-- Left Info Column -->
+                <div class="tech-info-col reveal-element">
+                    <div class="section-label" id="t-label">OUR TECHNOLOGY</div>
+
+                    <h2 class="tech-heading" id="t-head-en">
+                        More Than AI.<br>Complete Chat<br>Automation.
+                    </h2>
+                    <h2 class="tech-heading hidden" id="t-head-si">
+                        AI වලටත් වඩා.<br>පරිපූර්ණ<br>ස්වයංක්‍රීයකරණයක්.
+                    </h2>
+
+                    <p class="tech-paragraph" id="t-desc-en">
+                        We combine powerful automation tools and intelligent systems to handle your messaging, media
+                        downloads, and daily tasks effortlessly.
+                    </p>
+                    <p class="tech-paragraph hidden" id="t-desc-si">
+                        අපි දියුණු ස්මාර්ට් තාක්ෂණය යොදාගෙන ඔබේ පණිවිඩ යැවීම්, වීඩියෝ බාගත කිරීම් සහ දෛනික වැඩකටයුතු ඉතා
+                        පහසුවෙන් ස්වයංක්‍රීය කරනවා.
+                    </p>
+
+                    <a href="#lineup" class="tech-link">
+                        <span id="t-link-text">Learn More</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i>
+                    </a>
+                </div>
+
+                <!-- Center Exploded View with 3 Exact Callout Pointers -->
+                <div class="tech-center-col reveal-element delay-1">
+                    <div class="exploded-img-wrapper">
+                        <img src="assets/image_1.jpg" alt="Kaveez Technical View" class="exploded-img">
+
+                        <!-- Pointer 1: Protective Shell -->
+                        <div class="callout-pointer pointer-top" title="Ultra-durable, lightweight enclosure">
+                            <div class="callout-line"></div>
+                            <div class="callout-text">
+                                <h5 id="callout-1-title">PROTECTIVE SHELL</h5>
+                                <p id="callout-1-sub">Ultra-durable, lightweight</p>
+                            </div>
+                        </div>
+
+                        <!-- Pointer 2: AI Processor -->
+                        <div class="callout-pointer pointer-mid" title="High-efficiency inference core">
+                            <div class="callout-line"></div>
+                            <div class="callout-text">
+                                <h5 id="callout-2-title">AI PROCESSOR</h5>
+                                <p id="callout-2-sub">High-efficiency inference</p>
+                            </div>
+                        </div>
+
+                        <!-- Pointer 3: Modular Design -->
+                        <div class="callout-pointer pointer-bot" title="Built for real environments">
+                            <div class="callout-line"></div>
+                            <div class="callout-text">
+                                <h5 id="callout-3-title">MODULAR DESIGN</h5>
+                                <p id="callout-3-sub">Built for real environments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Precision Glass Conduit) -->
+                <div class="tech-right-col reveal-element delay-2">
+                    <img src="assets/image_2.jpg" alt="Precision in Every Detail" class="precision-img">
+                    <div class="precision-overlay">
+                        <div class="precision-title" id="t-prec-title">
+                            PRECISION<br>IN EVERY<br>DETAIL.
+                        </div>
+                        <div class="precision-arrow-btn">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             PRODUCT LINEUP BENTO GRID (Codex, Atlas, Nexus, Orbit)
+             ======================================================== -->
+        <section class="lineup-section" id="lineup">
+            <div class="container">
+                <div class="section-label" id="lineup-section-label">PRODUCT LINEUP</div>
+
+                <div class="lineup-grid">
+
+                    <!-- Card 1: Codex (Social Fetcher) -->
+                    <div class="lineup-card tech-bracket reveal-element"
+                        onclick="populateAndFocus('Social Downloader')">
+                        <div class="card-header">
+                            <div class="card-name" id="c1-title">Codex</div>
+                            <div class="card-subtext" id="c1-sub">Edge AI Computer // Social Fetch</div>
+                        </div>
+                        <div class="card-visual">
+                            <img src="assets/feat_social.jpg" alt="Codex Edge AI Computer">
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-arrow-circle">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Atlas (Memory Vault / Anti-Delete) -->
+                    <div class="lineup-card tech-bracket reveal-element delay-1"
+                        onclick="populateAndFocus('Anti-Delete Vault')">
+                        <div class="card-header">
+                            <div class="card-name" id="c2-title">Atlas</div>
+                            <div class="card-subtext" id="c2-sub">Vision Sensor // Memory Vault</div>
+                        </div>
+                        <div class="card-visual">
+                            <img src="assets/feat_antidelete.jpg" alt="Atlas Vision Sensor">
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-arrow-circle">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Nexus (Document & PDF Converter) -->
+                    <div class="lineup-card tech-bracket reveal-element delay-2"
+                        onclick="populateAndFocus('PDF Engine')">
+                        <div class="card-header">
+                            <div class="card-name" id="c3-title">Nexus</div>
+                            <div class="card-subtext" id="c3-sub">Robotics Controller // Doc Engine</div>
+                        </div>
+                        <div class="card-visual">
+                            <img src="assets/feat_pdf.jpg" alt="Nexus Robotics Controller">
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-arrow-circle">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Orbit (Status & Reaction Sensor) -->
+                    <div class="lineup-card tech-bracket reveal-element delay-3"
+                        onclick="populateAndFocus('Status Reaction')">
+                        <div class="card-header">
+                            <div class="card-name" id="c4-title">Orbit</div>
+                            <div class="card-subtext" id="c4-sub">Multi-Modal Sensor // Auto React</div>
+                        </div>
+                        <div class="card-visual">
+                            <img src="assets/feat_react.jpg" alt="Orbit Multi-Modal Sensor">
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-arrow-circle">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 (Tall Hero Card on Right) -->
+                    <div class="lineup-hero-card tech-bracket reveal-element delay-4"
+                        onclick="document.getElementById('connect').scrollIntoView({behavior: 'smooth'})">
+                        <img src="assets/feat_movie.jpg" alt="Cinematic Horizon Modules" class="lhc-bg">
+                        <div class="lhc-content">
+                            <div class="lhc-title" id="lhc-heading">
+                                SMALL<br>MODULES.<br>BIGGER<br>POSSIBILITIES.
+                            </div>
+                            <div class="card-arrow-circle"
+                                style="border-color: var(--text-main); color: var(--text-main);">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             MOVIE FEATURE HIGHLIGHT
+             ======================================================== -->
+        <section class="movie-feature-section" id="movie-feature">
+            <div class="container movie-grid">
+
+                <!-- Left: Text Info -->
+                <div class="movie-text-content reveal-element">
+                    <div class="movie-tag">Direct WhatsApp Downloads</div>
+
+                    <h2 class="movie-title" id="m-title-en">
+                        Cinematic Downloads.<br><span>Right in your chat.</span>
+                    </h2>
+                    <h2 class="movie-title hidden" id="m-title-si">
+                        ඕනෑම චිත්‍රපටයක්.<br><span>කෙළින්ම WhatsApp එකට.</span>
+                    </h2>
+
+                    <p class="movie-desc" id="m-desc-en">
+                        No more searching through ad-filled websites. Just type the command followed by the movie name,
+                        and the bot will instantly find and send the full video file directly to your WhatsApp.
+                    </p>
+                    <p class="movie-desc hidden" id="m-desc-si">
+                        Ads පිරුණු වෙබ්සයිට් වල රස්තියාදු වෙන්න ඕනේ නෑ. චිත්‍රපටයේ නම type කරලා යවන්න. තත්පර කිහිපයකින්
+                        මුළු චිත්‍රපටයම කෙළින්ම WhatsApp එකටම ගෙන්න ගන්න!
+                    </p>
+
+                    <div class="command-box">
+                        <i class="fa-solid fa-terminal" style="color: var(--text-subtle);"></i>
+                        <code>.movie Inception</code>
+                    </div>
+                </div>
+
+                <!-- Right: Glassmorphic Chat Mockup -->
+                <div class="chat-mockup-wrapper reveal-element delay-1">
+                    <div class="chat-mockup-glow"></div>
+                    <div class="chat-mockup">
+
+                        <!-- User Message -->
+                        <div class="chat-bubble chat-user">
+                            .movie Inception
+                            <span class="chat-time">10:42 AM <i class="fa-solid fa-check-double"
+                                    style="color: #53bdeb; margin-left: 2px;"></i></span>
+                        </div>
+
+                        <!-- Bot Message 1 -->
+                        <div class="chat-bubble chat-bot">
+                            🎬 <b>Searching for Inception...</b><br>
+                            Found in 1080p Bluray. Downloading now.
+                            <span class="chat-time">10:42 AM</span>
+                        </div>
+
+                        <!-- Bot Message 2 (Media) -->
+                        <div class="chat-bubble chat-bot">
+                            <div class="chat-media">
+                                <div class="media-icon">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                                <div class="media-info">
+                                    <span class="media-name">Inception_2010_1080p.mp4</span>
+                                    <span class="media-size">1.2 GB • MP4 Video</span>
+                                </div>
+                            </div>
+                            Here is your movie! 🍿 Enjoy watching.
+                            <span class="chat-time">10:43 AM</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             NEXUS AI FEATURE HIGHLIGHT
+             ======================================================== -->
+        <section class="ai-feature-section" id="ai-feature">
+            <div class="container ai-grid">
+
+                <!-- Left (Desktop) / Bottom (Mobile): Chat Mockup -->
+                <div class="chat-mockup-wrapper reveal-element">
+                    <div class="chat-mockup-glow"
+                        style="background: radial-gradient(circle, rgba(83, 189, 235, 0.15) 0%, transparent 60%);">
+                    </div>
+                    <div class="chat-mockup">
+
+                        <!-- User Message -->
+                        <div class="chat-bubble chat-user">
+                            .nexus ai Write a short poem about the moon and sea.
+                            <span class="chat-time">11:05 AM <i class="fa-solid fa-check-double"
+                                    style="color: #53bdeb; margin-left: 2px;"></i></span>
+                        </div>
+
+                        <!-- Bot Message -->
+                        <div class="chat-bubble chat-bot">
+                            ✨ <b>Nexus AI</b><br><br>
+                            The moon pulls the ocean near,<br>
+                            A silver light, quiet and clear.<br>
+                            Waves whisper secrets to the sand,<br>
+                            Two lovers reaching across the land. 🌊🌙
+                            <span class="chat-time">11:05 AM</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right (Desktop) / Top (Mobile): Text Info -->
+                <div class="movie-text-content reveal-element delay-1">
+                    <div class="movie-tag" style="color: #53bdeb;">Ultimate AI Assistant</div>
+
+                    <h2 class="movie-title" id="ai-title-en">
+                        Nexus AI.<br><span>Your personal genius.</span>
+                    </h2>
+                    <h2 class="movie-title hidden" id="ai-title-si">
+                        Nexus AI.<br><span>ඔබගේ බුද්ධිමත් සහයකයා.</span>
+                    </h2>
+
+                    <p class="movie-desc" id="ai-desc-en">
+                        Experience the power of advanced AI directly in WhatsApp. Just type the command to ask
+                        questions, write essays, translate text, or generate code. The possibilities are endless.
+                    </p>
+                    <p class="movie-desc hidden" id="ai-desc-si">
+                        ලොව දියුණුතම AI තාක්ෂණය දැන් ඔබේ WhatsApp එකටම. ඕනෑම ප්‍රශ්නයක් අහන්න, රචනා ලියන්න, භාෂා
+                        පරිවර්තනය කරන්න හෝ Code ලියවගන්න. පිළිතුර තත්පරයකින්.
+                    </p>
+
+                    <div class="command-box">
+                        <i class="fa-solid fa-terminal" style="color: var(--text-subtle);"></i>
+                        <code>.nexus ai [prompt]</code>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             OUR PROCESS & CURVED EARTH HORIZON (Video Background & Pairing)
+             ======================================================== -->
+        <section class="process-section" id="process">
+
+            <!-- Process Top Grid -->
+            <div class="container process-header-grid">
+                <div class="process-title-col reveal-element">
+                    <div class="section-label" id="proc-label">HOW TO LINK</div>
+                    <h2 id="proc-title">Connect<br>in 4 Easy<br>Steps.</h2>
+                </div>
+
+                <div class="process-steps-grid reveal-element delay-1">
+                    <!-- Step 01 -->
+                    <div class="step-block tech-bracket">
+                        <div class="step-num">01</div>
+                        <div class="step-name" id="s1-name">Get Code</div>
+                        <div class="step-desc" id="s1-desc">Enter your number and get the pairing code below.</div>
+                    </div>
+                    <!-- Step 02 -->
+                    <div class="step-block tech-bracket">
+                        <div class="step-num">02</div>
+                        <div class="step-name" id="s2-name">Open WhatsApp</div>
+                        <div class="step-desc" id="s2-desc">Go to Settings and select Linked Devices.</div>
+                    </div>
+                    <!-- Step 03 -->
+                    <div class="step-block tech-bracket">
+                        <div class="step-num">03</div>
+                        <div class="step-name" id="s3-name">Link Number</div>
+                        <div class="step-desc" id="s3-desc">Tap "Link a device" then "Link with phone number instead".
+                        </div>
+                    </div>
+                    <!-- Step 04 -->
+                    <div class="step-block tech-bracket">
+                        <div class="step-num">04</div>
+                        <div class="step-name" id="s4-name">Enter Code</div>
+                        <div class="step-desc" id="s4-desc">Type the 8-digit code to connect instantly.</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </section>
+    </main>
+
+    <!-- Footer (1:1 with Screenshot) -->
+    <footer>
+        <div class="footer-left">
+            <span class="footer-logo">Kaveez Automation</span>
+            <span id="footer-copy">&copy; 2026 Kaveez Automation. All rights reserved.</span>
+        </div>
+        <div class="footer-nav">
+            <a href="https://wa.me/94719388481" target="_blank" id="f-link-1">Developer Contact</a>
+            <a href="https://kaveesha.top/" target="_blank" id="f-link-2">Developer Portfolio</a>
+            <a href="https://moviestream.top/ " target="_blank" id="f-link-3">Movie Download Web</a>
+            <span style="letter-spacing: 3px; color: var(--text-subtle);">////</span>
+        </div>
+    </footer>
+
+    <!-- Toast Bubble -->
+    <div id="toast" class="toast-bubble">Code copied to clipboard!</div>
+
+    <!-- ========================================================
+         SCRIPTS: THEME, BILINGUAL, AUDIO CANVAS, & PAIR LOGIC
+         ======================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* ----------------------------------------------------
+               1. Scroll Progress Bar
+               ---------------------------------------------------- */
+            const progressBar = document.getElementById('scroll-progress');
+            window.addEventListener('scroll', () => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPos = window.scrollY;
+                if (totalHeight > 0) {
+                    progressBar.style.width = `${(scrollPos / totalHeight) * 100}%`;
+                }
+            }, { passive: true });
+
+            /* ----------------------------------------------------
+               2. Scroll Reveal Observer (Lag-Free)
+               ---------------------------------------------------- */
+            const revealElements = document.querySelectorAll('.reveal-element');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            /* ----------------------------------------------------
+               3. Theme Toggle (Dark & Light Modes)
+               ---------------------------------------------------- */
+            const htmlEl = document.documentElement;
+            const themeBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+
+            // Load saved theme or default to dark
+            const savedTheme = localStorage.getItem('omni_theme') || 'dark';
+            setTheme(savedTheme);
+
+            themeBtn.addEventListener('click', () => {
+                const currentTheme = htmlEl.getAttribute('data-theme') || 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+
+            function setTheme(theme) {
+                htmlEl.setAttribute('data-theme', theme);
+                localStorage.setItem('omni_theme', theme);
+                if (theme === 'light') {
+                    themeIcon.className = 'fa-solid fa-moon';
+                    themeBtn.setAttribute('title', 'Switch to Dark Mode');
+                } else {
+                    themeIcon.className = 'fa-solid fa-sun';
+                    themeBtn.setAttribute('title', 'Switch to Light Mode');
+                }
+            }
+
+            /* ----------------------------------------------------
+               4. Bilingual Dictionary (English & Sinhala)
+               ---------------------------------------------------- */
+            const langBtn = document.getElementById('lang-toggle');
+            const langIndicator = document.getElementById('lang-indicator');
+
+            const dictionary = {
+                en: {
+                    langBtn: "සිංහල",
+                    navTagline: "WHATSAPP AUTOMATION PLATFORM",
+                    navItems: ["Products", "Technology", "Lineup", "Process"],
+                    navCta: "Link WhatsApp",
+                    heroBadge: "BUILT FOR WHATSAPP",
+                    heroDesc: "Kaveez Automation develops next-generation WhatsApp bot automations that manage your chats seamlessly and securely.",
+                    heroCta: "Explore Products",
+                    heroTracker: "SENSE • THINK • ACT",
+                    heroSpecMotto: "A MORE CAPABLE TOMORROW",
+                    intelLabel: "REAL-WORLD INTELLIGENCE",
+                    techLabel: "OUR TECHNOLOGY",
+                    techDesc: "We combine advanced sensors, high-performance computing, and intelligent systems to solve complex physical & chat automation challenges.",
+                    techLink: "Learn More",
+                    callout1T: "PROTECTIVE SHELL", callout1S: "Ultra-durable, lightweight",
+                    callout2T: "AI PROCESSOR", callout2S: "High-efficiency inference",
+                    callout3T: "MODULAR DESIGN", callout3S: "Built for real environments",
+                    precTitle: "PRECISION<br>IN EVERY<br>DETAIL.",
+                    lineupLabel: "PRODUCT LINEUP",
+                    c1T: "Social Downloader", c1S: "TikTok, FB & MP3 Download",
+                    c2T: "Anti-Delete Vault", c2S: "View Deleted & View-Once Media",
+                    c3T: "PDF Engine", c3S: "Image to PDF Converter",
+                    c4T: "Status React", c4S: "Auto Emoji Like for Status",
+                    lhcHead: "MOVIE<br>DOWNLOADS.<br>DIRECT TO<br>CHAT.",
+                    sysCapHead: "SYSTEM CAPABILITIES",
+                    sysCap1: "Anti-Delete Message",
+                    sysCap2: "Anti-View Once",
+                    sysCap3: "Personal AI Chat",
+                    sysCap4: "Direct Movie Downloads",
+                    sysCap5: "Auto Status React",
+                    procLabel: "HOW TO LINK",
+                    procTitle: "Connect<br>in 4 Easy<br>Steps.",
+                    s1N: "Get Code", s1D: "Enter your number and get the pairing code below.",
+                    s2N: "Open WhatsApp", s2D: "Go to Settings and select Linked Devices.",
+                    s3N: "Link Number", s3D: "Tap \"Link a device\" then \"Link with phone number instead\".",
+                    s4N: "Enter Code", s4D: "Type the 8-digit code to connect instantly.",
+                    horizonMotto: "A MORE CAPABLE TOMORROW.",
+                    btnPair: "Join the Journey",
+                    pairInstr: "Open WhatsApp > <b>Linked Devices</b> > <b>Link with phone number</b> > Enter this code.",
+                    copyBtn: "Copy Code",
+                    toast: "Pairing code copied to clipboard!"
+                },
+                si: {
+                    langBtn: "English",
+                    navTagline: "ස්මාර්ට් WHATSAPP සඳහා නවීන තාක්ෂණය",
+                    navItems: ["නිෂ්පාදන", "තාක්ෂණය", "මොඩියුල", "ක්‍රියාවලිය"],
+                    navCta: "WhatsApp සම්බන්ධ කරන්න",
+                    heroBadge: "නියම කාර්යක්ෂමතාවය සඳහා",
+                    heroDesc: "WhatsApp භාවිතය සම්පූර්ණයෙන්ම ස්වයංක්‍රීය කර පහසු කරන ලොව නවීනතම ස්මාර්ට් තාක්ෂණය.",
+                    heroCta: "පහසුකම් බලන්න",
+                    heroTracker: "දැනගන්න • සිතන්න • ක්‍රියාත්මක වන්න",
+                    heroSpecMotto: "වඩාත් හැකියාවන්ගෙන් පිරි හෙටක්",
+                    intelLabel: "ප්‍රායෝගික බුද්ධිය",
+                    techLabel: "අපගේ තාක්ෂණය",
+                    techDesc: "ඔබගේ එදිනෙදා WhatsApp භාවිතයේ ඇති සංකීර්ණ ගැටළු ක්ෂණිකව විසඳන අධිවේගී ආරක්ෂිත පද්ධතිය.",
+                    techLink: "තවත් විස්තර",
+                    callout1T: "ආරක්ෂිත කවචය", callout1S: "ශක්තිමත්, බරින් අඩු ආවරණය",
+                    callout2T: "AI ප්‍රොසෙසරය", callout2S: "අධිවේගී බුද්ධිමත් මොඩියුලය",
+                    callout3T: "මොඩියුලර් නිමාව", callout3S: "ඕනෑම පරිසරයකට ගැලපෙන ලෙස",
+                    precTitle: "සෑම අංශයකින්ම<br>පූර්ණ<br>නිමාවක්.",
+                    lineupLabel: "නිෂ්පාදන පෙළගැස්ම",
+                    c1T: "Social Downloader", c1S: "TikTok, FB, MP3 ස්වයංක්‍රීය බාගත කිරීම්",
+                    c2T: "Anti-Delete Vault", c2S: "මැකූ පණිවිඩ සහ View-Once බැලීම",
+                    c3T: "PDF Engine", c3S: "පින්තූර PDF බවට පත් කිරීම",
+                    c4T: "Status React", c4S: "Status වලට ස්වයංක්‍රීය Emoji React කිරීම",
+                    lhcHead: "ඕනෑම<br>චිත්‍රපටයක්.<br>කෙළින්ම<br>WHATSAPP එකට.",
+                    sysCapHead: "ප්‍රධාන පහසුකම්",
+                    sysCap1: "මැකූ පණිවිඩ කියවීම",
+                    sysCap2: "View-Once බැලීම",
+                    sysCap3: "AI චැට් සහයකයා",
+                    sysCap4: "චිත්‍රපට බාගත කිරීම්",
+                    sysCap5: "Status වලට React කිරීම",
+                    procLabel: "සම්බන්ධ කරන ආකාරය",
+                    procTitle: "පහසු<br>පියවර<br>4කින්.",
+                    s1N: "කේතය ගන්න", s1D: "ඔබගේ අංකය ඇතුළත් කර Pairing Code එක ලබාගන්න.",
+                    s2N: "WhatsApp යන්න", s2D: "දුරකථනයේ Settings ගොස් Linked Devices තෝරන්න.",
+                    s3N: "Number එකෙන් Link", s3D: "\"Link a device\" ඔබා \"Link with phone number instead\" දෙන්න.",
+                    s4N: "කේතය දෙන්න", s4D: "ලැබුණු කේතය ඇතුළත් කළ පසු Bot සම්බන්ධ වේ.",
+                    horizonMotto: "වඩාත් පහසු WHATSAPP අත්දැකීමක්.",
+                    btnPair: "සම්බන්ධ වන්න",
+                    pairInstr: "WhatsApp විවෘත කරන්න > <b>Linked Devices</b> > <b>Link with phone number</b> > මෙම කේතය ලබාදෙන්න.",
+                    copyBtn: "Copy කරන්න",
+                    toast: "කේතය සාර්ථකව Copy කරගන්නා ලදී!"
+                }
+            };
+
+            let currentLang = 'en';
+
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'en' ? 'si' : 'en';
+                applyLanguage(currentLang);
+            });
+
+            function applyLanguage(lang) {
+                const data = dictionary[lang];
+                langIndicator.innerText = data.langBtn;
+                document.getElementById('nav-tagline').innerText = data.navTagline;
+                document.getElementById('nav-item-1').innerText = data.navItems[0];
+                document.getElementById('nav-item-2').innerText = data.navItems[1];
+                document.getElementById('nav-item-3').innerText = data.navItems[2];
+                document.getElementById('nav-item-4').innerText = data.navItems[3];
+                document.getElementById('nav-cta-text').innerText = data.navCta;
+
+                document.getElementById('hero-badge-text').innerText = data.heroBadge;
+                if (lang === 'si') {
+                    document.getElementById('h-title-en').classList.add('hidden');
+                    document.getElementById('h-desc-en').classList.add('hidden');
+                    document.getElementById('t-head-en').classList.add('hidden');
+                    document.getElementById('t-desc-en').classList.add('hidden');
+                    document.getElementById('m-title-en').classList.add('hidden');
+                    document.getElementById('m-desc-en').classList.add('hidden');
+                    document.getElementById('ai-title-en').classList.add('hidden');
+                    document.getElementById('ai-desc-en').classList.add('hidden');
+
+                    document.getElementById('h-title-si').classList.remove('hidden');
+                    document.getElementById('h-desc-si').classList.remove('hidden');
+                    document.getElementById('t-head-si').classList.remove('hidden');
+                    document.getElementById('t-desc-si').classList.remove('hidden');
+                    document.getElementById('m-title-si').classList.remove('hidden');
+                    document.getElementById('m-desc-si').classList.remove('hidden');
+                    document.getElementById('ai-title-si').classList.remove('hidden');
+                    document.getElementById('ai-desc-si').classList.remove('hidden');
+                } else {
+                    document.getElementById('h-title-si').classList.add('hidden');
+                    document.getElementById('h-desc-si').classList.add('hidden');
+                    document.getElementById('t-head-si').classList.add('hidden');
+                    document.getElementById('t-desc-si').classList.add('hidden');
+                    document.getElementById('m-title-si').classList.add('hidden');
+                    document.getElementById('m-desc-si').classList.add('hidden');
+                    document.getElementById('ai-title-si').classList.add('hidden');
+                    document.getElementById('ai-desc-si').classList.add('hidden');
+
+                    document.getElementById('h-title-en').classList.remove('hidden');
+                    document.getElementById('h-desc-en').classList.remove('hidden');
+                    document.getElementById('t-head-en').classList.remove('hidden');
+                    document.getElementById('t-desc-en').classList.remove('hidden');
+                    document.getElementById('m-title-en').classList.remove('hidden');
+                    document.getElementById('m-desc-en').classList.remove('hidden');
+                    document.getElementById('ai-title-en').classList.remove('hidden');
+                    document.getElementById('ai-desc-en').classList.remove('hidden');
+                }
+
+                document.getElementById('h-cta-text').innerText = data.heroCta;
+                document.getElementById('h-tracker-sub').innerText = data.heroTracker;
+                document.getElementById('h-spec-motto').innerText = data.heroSpecMotto;
+                document.getElementById('sys-cap-head').innerText = data.sysCapHead;
+                document.getElementById('sys-cap-1').innerText = data.sysCap1;
+                document.getElementById('sys-cap-2').innerText = data.sysCap2;
+                document.getElementById('sys-cap-3').innerText = data.sysCap3;
+                document.getElementById('sys-cap-4').innerText = data.sysCap4;
+                document.getElementById('sys-cap-5').innerText = data.sysCap5;
+                document.getElementById('h-intel-label').innerText = data.intelLabel;
+
+                document.getElementById('t-label').innerText = data.techLabel;
+                document.getElementById('t-link-text').innerText = data.techLink;
+                document.getElementById('callout-1-title').innerText = data.callout1T;
+                document.getElementById('callout-1-sub').innerText = data.callout1S;
+                document.getElementById('callout-2-title').innerText = data.callout2T;
+                document.getElementById('callout-2-sub').innerText = data.callout2S;
+                document.getElementById('callout-3-title').innerText = data.callout3T;
+                document.getElementById('callout-3-sub').innerText = data.callout3S;
+                document.getElementById('t-prec-title').innerHTML = data.precTitle;
+
+                document.getElementById('lineup-section-label').innerText = data.lineupLabel;
+                document.getElementById('c1-title').innerText = data.c1T; document.getElementById('c1-sub').innerText = data.c1S;
+                document.getElementById('c2-title').innerText = data.c2T; document.getElementById('c2-sub').innerText = data.c2S;
+                document.getElementById('c3-title').innerText = data.c3T; document.getElementById('c3-sub').innerText = data.c3S;
+                document.getElementById('c4-title').innerText = data.c4T; document.getElementById('c4-sub').innerText = data.c4S;
+                document.getElementById('lhc-heading').innerHTML = data.lhcHead;
+
+                document.getElementById('proc-label').innerText = data.procLabel;
+                document.getElementById('proc-title').innerHTML = data.procTitle;
+                document.getElementById('s1-name').innerText = data.s1N; document.getElementById('s1-desc').innerText = data.s1D;
+                document.getElementById('s2-name').innerText = data.s2N; document.getElementById('s2-desc').innerText = data.s2D;
+                document.getElementById('s3-name').innerText = data.s3N; document.getElementById('s3-desc').innerText = data.s3D;
+                document.getElementById('s4-name').innerText = data.s4N; document.getElementById('s4-desc').innerText = data.s4D;
+
+                document.getElementById('horizon-motto-text').innerText = data.horizonMotto;
+                document.getElementById('btn-pair-text').innerText = data.btnPair;
+                document.getElementById('pair-instruction-text').innerHTML = data.pairInstr;
+                document.getElementById('copy-btn-text').innerText = data.copyBtn;
+            }
+
+            /* ----------------------------------------------------
+               5. Live Audio Waveform Canvas Animation
+               ---------------------------------------------------- */
+            const canvas = document.getElementById('audio-wave-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let step = 0;
+
+                function renderWave() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const isDark = htmlEl.getAttribute('data-theme') !== 'light';
+                    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+                    ctx.lineWidth = 1.5;
+
+                    ctx.beginPath();
+                    for (let x = 0; x < canvas.width; x++) {
+                        const y = canvas.height / 2 +
+                            Math.sin((x + step) * 0.05) * 14 * Math.sin(step * 0.02) +
+                            Math.cos((x - step) * 0.08) * 8;
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+
+                    // Subtle secondary harmonic line
+                    ctx.beginPath();
+                    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.25)' : 'rgba(0, 0, 0, 0.25)';
+                    for (let x = 0; x < canvas.width; x++) {
+                        const y2 = canvas.height / 2 +
+                            Math.cos((x + step * 1.5) * 0.04) * 18 * Math.cos(step * 0.03);
+                        if (x === 0) ctx.moveTo(x, y2);
+                        else ctx.lineTo(x, y2);
+                    }
+                    ctx.stroke();
+
+                    step += 1.2;
+                    requestAnimationFrame(renderWave);
+                }
+                renderWave();
+            }
+
+            /* ----------------------------------------------------
+               6. Pairing Code Engine
+               ---------------------------------------------------- */
+            const pairForm = document.getElementById('pairing-form');
+            const phoneInput = document.getElementById('user-phone');
+            const resultBox = document.getElementById('code-result-container');
+            const displayCode = document.getElementById('display-code');
+            const btnPairText = document.getElementById('btn-pair-text');
+            const btnPairIcon = document.getElementById('btn-pair-icon');
+            const copyBtn = document.getElementById('copy-code-btn');
+            const copyBtnText = document.getElementById('copy-btn-text');
+            const toast = document.getElementById('toast');
+
+            // Quick click on bento cards scrolls and fills
+            window.populateAndFocus = function (feature) {
+                const connectSection = document.getElementById('connect');
+                connectSection.scrollIntoView({ behavior: 'smooth' });
+                phoneInput.focus();
+                showToast(`Selected module: ${feature}`);
+            };
+
+            const aiModal = document.getElementById('ai-modal');
+            const btnNeedAi = document.getElementById('btn-need-ai');
+            const btnSkipAi = document.getElementById('btn-skip-ai');
+            const btnProceedAi = document.getElementById('btn-proceed-ai');
+            const apiKeyContainer = document.getElementById('api-key-container');
+            const apiKeyModalInput = document.getElementById('api-key-modal');
+
+            pairForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const rawVal = phoneInput.value.replace(/[^0-9]/g, '');
+
+                if (rawVal.length < 8) {
+                    showToast('Please enter a valid phone number');
+                    phoneInput.focus();
+                    return;
+                }
+
+                // Show AI Modal
+                aiModal.style.display = 'flex';
+
+                // Reset Modal State
+                apiKeyContainer.style.display = 'none';
+                btnNeedAi.style.display = 'block';
+                btnSkipAi.style.display = 'block';
+                btnProceedAi.style.display = 'none';
+                apiKeyModalInput.value = '';
+            });
+
+            let pollingInterval;
+
+            function executePairing(apiKey = '') {
+                aiModal.style.display = 'none';
+                const rawVal = phoneInput.value.replace(/[^0-9]/g, '');
+
+                // Reset UI
+                document.getElementById('pairing-code-content').style.display = 'block';
+                document.getElementById('pairing-success-content').style.display = 'none';
+                if (pollingInterval) clearInterval(pollingInterval);
+
+                // Show processing spinner
+                const ogText = btnPairText.innerText;
+                btnPairText.innerText = currentLang === 'si' ? 'සම්බන්ධ වෙමින්...' : 'Generating Code...';
+                btnPairIcon.className = 'fa-solid fa-circle-notch fa-spin';
+
+                fetch(`https://wpbot.kaveez.top/pair?number=${rawVal}&apikey=${encodeURIComponent(apiKey)}`)
+                    .then(res => res.text())
+                    .then(fullCode => {
+                        displayCode.innerText = fullCode;
+                        resultBox.style.display = 'block';
+                        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                        btnPairText.innerText = ogText;
+                        btnPairIcon.className = 'fa-solid fa-arrow-up-right-from-square';
+                        showToast(currentLang === 'si' ? 'කේතය සාර්ථකව උත්පාදනය විය!' : 'Pairing code generated successfully!');
+
+                        // Start Polling for connection success
+                        pollingInterval = setInterval(() => {
+                            fetch(`https://wpbot.kaveez.top/status?number=${rawVal}`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.status === 'connected') {
+                                        clearInterval(pollingInterval);
+                                        document.getElementById('pairing-code-content').style.display = 'none';
+                                        document.getElementById('pairing-success-content').style.display = 'block';
+                                        showToast(currentLang === 'si' ? 'සාර්ථකව සම්බන්ධ විය!' : 'Connected successfully!');
+                                    }
+                                })
+                                .catch(e => console.log('Polling error:', e));
+                        }, 2500);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        btnPairText.innerText = ogText;
+                        btnPairIcon.className = 'fa-solid fa-arrow-up-right-from-square';
+                        showToast(currentLang === 'si' ? 'දෝෂයක්! කරුණාකර නැවත උත්සාහ කරන්න.' : 'Error generating code. Is backend running?');
+                    });
+            }
+
+            btnNeedAi.addEventListener('click', () => {
+                btnNeedAi.style.display = 'none';
+                btnSkipAi.style.display = 'none';
+                apiKeyContainer.style.display = 'flex';
+                btnProceedAi.style.display = 'block';
+                apiKeyModalInput.focus();
+            });
+
+            btnSkipAi.addEventListener('click', () => {
+                executePairing('');
+            });
+
+            btnProceedAi.addEventListener('click', () => {
+                const key = apiKeyModalInput.value.trim();
+                if (!key) {
+                    showToast('Please enter your API Key or cancel');
+                    return;
+                }
+                executePairing(key);
+            });
+
+            // Copy to clipboard
+            copyBtn.addEventListener('click', () => {
+                const code = displayCode.innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    const ogCopyText = copyBtnText.innerText;
+                    copyBtnText.innerText = currentLang === 'si' ? 'Copy කරගත්තා!' : 'Copied!';
+                    copyBtn.querySelector('i').className = 'fa-solid fa-check';
+
+                    showToast(dictionary[currentLang].toast);
+
+                    setTimeout(() => {
+                        copyBtnText.innerText = ogCopyText;
+                        copyBtn.querySelector('i').className = 'fa-regular fa-copy';
+                    }, 2200);
+                });
+            });
+
+            function showToast(msg) {
+                toast.innerText = msg;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+        });
+    </script>
+
+    <!-- AI Modal Popup -->
+    <style>
+        .ai-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ai-modal-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+        }
+
+        .btn-skip-modal {
+            width: 100%;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-skip-modal:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+    </style>
+    <div id="ai-modal" class="ai-modal-overlay">
+        <div class="ai-modal-content">
+            <h3 style="margin-top: 0; color: white;">✨ Enable Nexus AI?</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;"
+                id="ai-modal-desc">
+                Do you want to enable the AI Agent? If yes, please provide your Groq API Key. If not, you can skip this
+                step.
+            </p>
+
+            <div id="api-key-container"
+                style="display: none; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; margin-bottom: 20px; align-items: center;">
+                <i class="fa-solid fa-key" style="color: var(--accent); margin-right: 10px;"></i>
+                <input type="text" id="api-key-modal" placeholder="Groq API Key (gsk_...)"
+                    style="background: transparent; border: none; outline: none; color: white; width: 100%; font-family: inherit;">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button type="button" id="btn-need-ai" class="btn-submit-code" style="width: 100%; border-radius: 8px;">
+                    Yes, I need AI 🤖
+                </button>
+                <button type="button" id="btn-skip-ai" class="btn-skip-modal">
+                    No, skip AI
+                </button>
+                <button type="button" id="btn-proceed-ai" class="btn-submit-code"
+                    style="width: 100%; border-radius: 8px; display: none;">
+                    Proceed & Get Code
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
