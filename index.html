@@ -1861,6 +1861,9 @@
                 <li><a href="https://wa.me/94719388481" target="_blank" id="nav-item-1">සංවර්ධක සම්බන්ධතාවය</a></li>
                 <li><a href="https://kaveesha.top/" target="_blank" id="nav-item-2">සංවර්ධක තොරතුරු</a></li>
                 <li><a href="https://moviestream.top/" target="_blank" id="nav-item-3">චිත්‍රපට වෙබ් අඩවිය</a></li>
+                <li><a href="#" onclick="openCmdModal(); return false;" style="color: #53bdeb; font-weight: 600;"><i
+                            class="fa-solid fa-terminal" style="margin-right: 5px;"></i><span id="nav-item-4">Bot
+                            විධානයන්</span></a></li>
             </ul>
 
             <div class="nav-actions">
@@ -2489,7 +2492,14 @@
                 en: {
                     langBtn: "සිංහල",
                     navTagline: "WHATSAPP AUTOMATION PLATFORM",
-                    navItems: ["Developer Contact", "Developer Portfolio", "Movie Download Web"],
+                    navItems: ["Developer Contact", "Developer Portfolio", "Movie Download Web", "Bot Commands"],
+                    cmdTitle: "Bot Commands",
+                    cmdDesc: "These commands only work from your personal You Number.",
+                    cmd1: "View all commands and info",
+                    cmd2: "Download status & set emoji reaction",
+                    cmd3: "Download movies (Subscription only)",
+                    cmd4: "Reply to download View-Once media (Reply before viewing)",
+                    cmdClose: "Close",
                     navCta: "Link WhatsApp",
                     heroBadge: "BUILT FOR WHATSAPP",
                     heroDesc: "Kaveez Automation develops next-generation WhatsApp bot automations that manage your chats seamlessly and securely.",
@@ -2543,7 +2553,14 @@
                 si: {
                     langBtn: "English",
                     navTagline: "ස්මාර්ට් WHATSAPP ස්වයංක්‍රීයකරණ පද්ධතිය",
-                    navItems: ["සංවර්ධක සම්බන්ධතාවය", "සංවර්ධක තොරතුරු", "චිත්‍රපට වෙබ් අඩවිය"],
+                    navItems: ["සංවර්ධක සම්බන්ධතාවය", "සංවර්ධක තොරතුරු", "චිත්‍රපට වෙබ් අඩවිය", "Bot විධානයන්"],
+                    cmdTitle: "මෙම Bot System එකේ Command",
+                    cmdDesc: "මේ සියලු command වැඩ කරන්නේ ඔබේ You Number එකට පමණයි. delete message සහ one view දේවල් ඔබේ You Number එකට පැමිණෙයි.",
+                    cmd1: "විස්තර ලබා ගත හැක",
+                    cmd2: "Status කැමති Emoji like දැමිම හා Download කිරිමට",
+                    cmd3: "movies ලබා ගත හැක (මෙය Subscription පැකේජ් වලට පමණයි)",
+                    cmd4: "එයට reply එකක් දැම්මොත් පමණක් Download කිරිමට හැක.(View කිරිමට පෙර Reply එක දාන්න)",
+                    cmdClose: "වහන්න",
                     navCta: "WhatsApp සම්බන්ධ කරන්න",
                     heroBadge: "නියම කාර්යක්ෂමතාවය සඳහා",
                     heroDesc: "WhatsApp භාවිතය සම්පූර්ණයෙන්ම ස්වයංක්‍රීය කර පහසු කරන ලොව නවීනතම ස්මාර්ට් තාක්ෂණය.",
@@ -2624,10 +2641,20 @@
                     safeSetText('nav-item-1', data.navItems[0]);
                     safeSetText('nav-item-2', data.navItems[1]);
                     safeSetText('nav-item-3', data.navItems[2]);
+                    safeSetText('nav-item-4', data.navItems[3]);
                     safeSetText('f-link-1', data.navItems[0]);
                     safeSetText('f-link-2', data.navItems[1]);
                     safeSetText('f-link-3', data.navItems[2]);
                 }
+
+                safeSetText('cmd-modal-title', data.cmdTitle);
+                safeSetText('cmd-modal-desc', data.cmdDesc);
+                safeSetText('cmd-desc-1', data.cmd1);
+                safeSetText('cmd-desc-2', data.cmd2);
+                safeSetText('cmd-desc-3', data.cmd3);
+                safeSetText('cmd-desc-4', data.cmd4);
+                safeSetText('cmd-close-btn', data.cmdClose);
+
                 safeSetText('nav-cta-text', data.navCta);
                 safeSetText('hero-badge-text', data.heroBadge);
 
@@ -2867,14 +2894,33 @@
             btnNeedAi.addEventListener('click', () => {
                 btnNeedAi.style.display = 'none';
                 btnSkipAi.style.display = 'none';
-                apiKeyContainer.style.display = 'flex';
-                apiKeyContainer.classList.remove('input-error-shake');
+                
                 const inlineAlert = document.getElementById('api-key-inline-alert');
-                if (inlineAlert) inlineAlert.style.display = 'none';
-                const apiKeyHelper = document.getElementById('api-key-helper');
-                if (apiKeyHelper) apiKeyHelper.style.display = 'block';
+                const inlineAlertText = document.getElementById('api-key-inline-alert-text');
+                
+                if (inlineAlert && inlineAlertText) {
+                    inlineAlertText.innerText = currentLang === 'si' ? 
+                        'Nexus AI විශේෂාංගය දැනට සංවර්ධනය වෙමින් පවතී. එමනිසා තාවකාලිකව එය අක්‍රීය කර ඇත. ඉතා ඉක්මනින් අපි මෙම විශේෂාංගය ඔබට ලබා දීමට කටයුතු කරන්නෙමු!' : 
+                        'Nexus AI is currently under development and temporarily disabled. We will bring this feature to you soon!';
+                    inlineAlert.style.display = 'flex';
+                    inlineAlert.style.borderColor = '#fbbf24';
+                    inlineAlert.style.backgroundColor = 'rgba(245, 158, 11, 0.16)';
+                    inlineAlert.style.color = '#fbbf24';
+                    
+                    const icon = inlineAlert.querySelector('i');
+                    if(icon) {
+                        icon.className = 'fa-solid fa-clock-rotate-left';
+                        icon.style.color = '#fbbf24';
+                    }
+                }
+
+                btnProceedAi.innerText = currentLang === 'si' ? 'ඉදිරියට යන්න' : 'Continue';
                 btnProceedAi.style.display = 'block';
-                apiKeyModalInput.focus();
+                
+                btnProceedAi.onclick = (e) => {
+                    e.preventDefault();
+                    executePairing('');
+                };
             });
 
             btnSkipAi.addEventListener('click', () => {
@@ -2887,32 +2933,32 @@
                 apiKeyContainer.classList.remove('input-error-shake');
             });
 
-            btnProceedAi.addEventListener('click', () => {
-                const key = apiKeyModalInput.value.trim();
-                if (!key) {
-                    const reqMsg = dictionary[currentLang]?.apiKeyRequired || (currentLang === 'si' ? 'කරුණාකර ඔබගේ Groq API Key එක ඇතුළත් කරන්න (නැතහොත් අවලංගු කරන්න)' : 'Please enter your Groq API Key or cancel');
-
-                    // 1. Show high-visibility toast on top (z-index: 100000)
-                    showToast(reqMsg, true);
-
-                    // 2. Show in-modal warning banner
-                    const inlineAlert = document.getElementById('api-key-inline-alert');
-                    const inlineAlertText = document.getElementById('api-key-inline-alert-text');
-                    if (inlineAlert && inlineAlertText) {
-                        inlineAlertText.innerText = reqMsg;
-                        inlineAlert.style.display = 'flex';
-                    }
-
-                    // 3. Shake and highlight input box
-                    apiKeyContainer.classList.remove('input-error-shake');
-                    void apiKeyContainer.offsetWidth; // force DOM reflow
-                    apiKeyContainer.classList.add('input-error-shake');
-
-                    apiKeyModalInput.focus();
-                    return;
-                }
-                executePairing(key);
-            });
+            // btnProceedAi.addEventListener('click', () => {
+            //     const key = apiKeyModalInput.value.trim();
+            //     if (!key) {
+            //         const reqMsg = dictionary[currentLang]?.apiKeyRequired || (currentLang === 'si' ? 'කරුණාකර ඔබගේ Groq API Key එක ඇතුළත් කරන්න (නැතහොත් අවලංගු කරන්න)' : 'Please enter your Groq API Key or cancel');
+            //
+            //         // 1. Show high-visibility toast on top (z-index: 100000)
+            //         showToast(reqMsg, true);
+            //
+            //         // 2. Show in-modal warning banner
+            //         const inlineAlert = document.getElementById('api-key-inline-alert');
+            //         const inlineAlertText = document.getElementById('api-key-inline-alert-text');
+            //         if (inlineAlert && inlineAlertText) {
+            //             inlineAlertText.innerText = reqMsg;
+            //             inlineAlert.style.display = 'flex';
+            //         }
+            //
+            //         // 3. Shake and highlight input box
+            //         apiKeyContainer.classList.remove('input-error-shake');
+            //         void apiKeyContainer.offsetWidth; // force DOM reflow
+            //         apiKeyContainer.classList.add('input-error-shake');
+            //
+            //         apiKeyModalInput.focus();
+            //         return;
+            //     }
+            //     executePairing(key);
+            // });
 
             // Copy to clipboard
             copyBtn.addEventListener('click', () => {
@@ -3080,6 +3126,69 @@
             </div>
         </div>
     </div>
+
+    <!-- Bot Commands Modal -->
+    <div id="cmd-modal" class="ai-modal-overlay">
+        <div class="ai-modal-content" style="max-width: 600px; padding: 25px;">
+            <h2
+                style="font-size: 1.4rem; font-family: 'Noto Sans Sinhala', sans-serif; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #53bdeb;">
+                <span>🔰</span> <span id="cmd-modal-title">මෙම Bot System එකේ Command</span>
+            </h2>
+            <p id="cmd-modal-desc"
+                style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.5; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
+                මේ සියලු command වැඩ කරන්නේ ඔබේ You Number එකට පමණයි. delete message සහ one view දේවල් ඔබේ You Number
+                එකට පැමිණෙයි.
+            </p>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 25px;">
+                <div
+                    style="background: var(--surface-card); padding: 14px; border-radius: 10px; border: 1px solid var(--border-faint);">
+                    <div
+                        style="color: #ff4d4d; font-family: 'JetBrains Mono', monospace; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem;">
+                        🔴 .info</div>
+                    <div style="font-size: 0.85rem; color: var(--text-subtle); line-height: 1.4;" id="cmd-desc-1">විස්තර
+                        ලබා ගත හැක</div>
+                </div>
+                <div
+                    style="background: var(--surface-card); padding: 14px; border-radius: 10px; border: 1px solid var(--border-faint);">
+                    <div
+                        style="color: #ff4d4d; font-family: 'JetBrains Mono', monospace; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem;">
+                        🔴 .sta</div>
+                    <div style="font-size: 0.85rem; color: var(--text-subtle); line-height: 1.4;" id="cmd-desc-2">Status
+                        කැමති Emoji like දැමිම හා Download කිරිමට</div>
+                </div>
+                <div
+                    style="background: var(--surface-card); padding: 14px; border-radius: 10px; border: 1px solid var(--border-faint);">
+                    <div
+                        style="color: #ff4d4d; font-family: 'JetBrains Mono', monospace; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem;">
+                        🔴 .movie [name]</div>
+                    <div style="font-size: 0.85rem; color: var(--text-subtle); line-height: 1.4;" id="cmd-desc-3">movies
+                        ලබා ගත හැක (මෙය Subscription පැකේජ් වලට පමණයි)</div>
+                </div>
+                <div
+                    style="background: var(--surface-card); padding: 14px; border-radius: 10px; border: 1px solid var(--border-faint);">
+                    <div
+                        style="color: #ff4d4d; font-family: 'JetBrains Mono', monospace; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem;">
+                        🔴 One view</div>
+                    <div style="font-size: 0.85rem; color: var(--text-subtle); line-height: 1.4;" id="cmd-desc-4">එයට
+                        reply එකක් දැම්මොත් පමණක් Download කිරිමට හැක.(View කිරිමට පෙර Reply එක දාන්න)</div>
+                </div>
+            </div>
+            <button type="button" onclick="closeCmdModal()" class="btn-skip-modal"
+                style="width: 100%; border-radius: 8px;">
+                <span id="cmd-close-btn">වහන්න</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function openCmdModal() {
+            document.getElementById('cmd-modal').style.display = 'flex';
+        }
+        function closeCmdModal() {
+            document.getElementById('cmd-modal').style.display = 'none';
+        }
+    </script>
 
     <!-- User Plan & View Tracking Modal -->
     <div id="plan-modal" class="ai-modal-overlay">
