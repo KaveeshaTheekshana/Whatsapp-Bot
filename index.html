@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kaveez Automation // WhatsApp Bot</title>
+    <title>WhatsApp Bot</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1321,23 +1321,57 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(50px);
-            background: var(--btn-bg);
-            color: var(--btn-text);
-            padding: 10px 22px;
+            background: #0f172a;
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 26px;
             border-radius: 9999px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-family: 'Space Grotesk', 'Noto Sans Sinhala', sans-serif;
+            font-size: 0.85rem;
             font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.25);
             opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100000;
             pointer-events: none;
+            max-width: 90vw;
+            text-align: center;
         }
 
         .toast-bubble.show {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
+        }
+
+        .toast-bubble.toast-error {
+            background: #1c0a0d !important;
+            border-color: #ef4444 !important;
+            color: #fca5a5 !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(239, 68, 68, 0.4) !important;
+        }
+
+        @keyframes shakeInput {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .input-error-shake {
+            animation: shakeInput 0.35s ease-in-out;
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 14px rgba(239, 68, 68, 0.45) !important;
         }
 
         /* Utility Hide */
@@ -1819,14 +1853,14 @@
                 </a>
                 <div class="brand-divider"></div>
                 <div class="brand-subtitle" id="nav-tagline">
-                    WHATSAPP AUTOMATION PLATFORM
+                    ස්මාර්ට් WHATSAPP ස්වයංක්‍රීයකරණ පද්ධතිය
                 </div>
             </div>
 
             <ul class="nav-links">
-                <li><a href="https://wa.me/94719388481" target="_blank">Developer Contact</a></li>
-                <li><a href="https://kaveesha.top/" target="_blank">Developer Portfolio</a></li>
-                <li><a href="https://moviestream.top/" target="_blank">Movie Download Web</a></li>
+                <li><a href="https://wa.me/94719388481" target="_blank" id="nav-item-1">සංවර්ධක සම්බන්ධතාවය</a></li>
+                <li><a href="https://kaveesha.top/" target="_blank" id="nav-item-2">සංවර්ධක තොරතුරු</a></li>
+                <li><a href="https://moviestream.top/" target="_blank" id="nav-item-3">චිත්‍රපට වෙබ් අඩවිය</a></li>
             </ul>
 
             <div class="nav-actions">
@@ -1838,14 +1872,14 @@
 
                 <!-- Language Toggle Button (English & Sinhala) -->
                 <button class="lang-badge" id="lang-toggle" title="Switch Language">
-                    <span id="lang-indicator">සිංහල</span>
+                    <span id="lang-indicator">English</span>
                 </button>
 
                 <!-- Capsule CTA Button -->
                 <a href="#connect" class="btn-pill-outline" id="nav-cta-btn"
                     style="border-color: #25D366; color: #25D366; box-shadow: 0 0 15px rgba(37, 211, 102, 0.2);">
                     <i class="fa-brands fa-whatsapp" style="font-size: 1rem;"></i>
-                    <span id="nav-cta-text" style="font-weight: 600;">Link WhatsApp</span>
+                    <span id="nav-cta-text" style="font-weight: 600;">WhatsApp සම්බන්ධ කරන්න</span>
                 </a>
             </div>
         </nav>
@@ -1863,28 +1897,28 @@
                 <!-- Left Column -->
                 <div class="hero-left reveal-element">
                     <div class="hero-badge" id="hero-badge-text">
-                        BUILT FOR REAL IMPACT
+                        නියම කාර්යක්ෂමතාවය සඳහා
                     </div>
 
-                    <h1 class="hero-title" id="h-title-en">
+                    <h1 class="hero-title hidden" id="h-title-en">
                         Intelligent<br>WhatsApp Bot<br><span>Systems.</span>
                     </h1>
-                    <h1 class="hero-title hidden" id="h-title-si">
+                    <h1 class="hero-title" id="h-title-si">
                         බුද්ධිමත්<br>WhatsApp Bot<br><span>පද්ධතිය.</span>
                     </h1>
 
-                    <p class="hero-desc" id="h-desc-en">
+                    <p class="hero-desc hidden" id="h-desc-en">
                         Automate your chats, fetch social media instantly, prevent deleted messages, convert images to
                         PDFs, and auto-react to status updates. The ultimate all-in-one assistant.
                     </p>
-                    <p class="hero-desc hidden" id="h-desc-si">
+                    <p class="hero-desc" id="h-desc-si">
                         කණ්ඩායම් පණිවිඩ යැවීම, මැකූ පණිවිඩ නැවත බැලීම, Social Media වලින් වීඩියෝ බාගත කිරීම, PDF සෑදීම
                         සහ Status වලට Auto React කිරීම ඇතුළු සියලුම දේ එකම තැනකින්.
                     </p>
 
                     <div class="hero-cta-group">
                         <a href="#lineup" class="btn-pill-outline tech-bracket" id="hero-cta-btn">
-                            <span id="h-cta-text">Explore Products</span>
+                            <span id="h-cta-text">පහසුකම් බලන්න</span>
                             <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.7rem;"></i>
                         </a>
                     </div>
@@ -1895,7 +1929,7 @@
                         <div class="tracker-line"></div>
                         <span class="tracker-active">01</span>
                         <div class="tracker-line"></div>
-                        <span id="h-tracker-sub">SENSE • THINK • ACT</span>
+                        <span id="h-tracker-sub">දැනගන්න • සිතන්න • ක්‍රියාත්මක වන්න</span>
                     </div>
                 </div>
 
@@ -1913,13 +1947,13 @@
                 <!-- Right Column (Specs & Interactive Visualizer Card) -->
                 <div class="hero-right reveal-element delay-2">
                     <div class="tech-spec-box">
-                        <div class="tech-mono" style="margin-bottom: 14px;" id="sys-cap-head">SYSTEM CAPABILITIES</div>
+                        <div class="tech-mono" style="margin-bottom: 14px;" id="sys-cap-head">ප්‍රධාන පහසුකම්</div>
                         <ul class="spec-list">
-                            <li class="spec-item" id="sys-cap-1">Anti-Delete Message</li>
-                            <li class="spec-item" id="sys-cap-2">Anti-View Once</li>
-                            <li class="spec-item" id="sys-cap-3">Personal AI Chat</li>
-                            <li class="spec-item" id="sys-cap-4">Direct Movie Downloads</li>
-                            <li class="spec-item spec-highlight" id="sys-cap-5">Auto Status React</li>
+                            <li class="spec-item" id="sys-cap-1">මැකූ පණිවිඩ කියවීම</li>
+                            <li class="spec-item" id="sys-cap-2">View-Once බැලීම</li>
+                            <li class="spec-item" id="sys-cap-3">AI චැට් සහයකයා</li>
+                            <li class="spec-item" id="sys-cap-4">චිත්‍රපට බාගත කිරීම්</li>
+                            <li class="spec-item spec-highlight" id="sys-cap-5">Status වලට React කිරීම</li>
                         </ul>
                     </div>
 
@@ -1956,17 +1990,29 @@
 
                 <!-- Center Content: Motto & Pairing Generator -->
                 <div class="horizon-center-content reveal-element">
-                    <div class="horizon-motto" id="horizon-motto-text">A MORE CAPABLE TOMORROW.</div>
+                    <div class="horizon-motto" id="horizon-motto-text">වඩාත් පහසු WHATSAPP අත්දැකීමක්.</div>
 
                     <!-- Pairing Form -->
                     <form id="pairing-form" class="pair-capsule-form" autocomplete="off">
                         <div class="prefix-badge">+</div>
                         <input type="tel" id="user-phone" class="phone-field" placeholder="94 7X XXX XXXX" required>
                         <button type="submit" id="btn-get-code" class="btn-submit-code">
-                            <span id="btn-pair-text">Link WhatsApp Bot</span>
+                            <span id="btn-pair-text">WhatsApp සම්බන්ධ කරන්න</span>
                             <i class="fa-solid fa-arrow-up-right-from-square" id="btn-pair-icon"></i>
                         </button>
                     </form>
+
+                    <!-- Plan Notice & Quick Check -->
+                    <div
+                        style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 0.8rem; color: var(--text-muted); flex-wrap: wrap;">
+                        <span id="plan-notice-text"><i class="fa-solid fa-gift" style="color: #38bdf8;"></i> නොමිලේ Plan
+                            එක: <b>චිත්‍රපට 1ක් ඇතුළත් වේ</b></span>
+                        <span style="opacity: 0.3;">|</span>
+                        <a href="javascript:void(0)" onclick="openPlanModal()" id="check-plan-link-text"
+                            style="color: #f59e0b; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-magnifying-glass"></i> Plan & Views බලන්න
+                        </a>
+                    </div>
 
                     <!-- Code Result Card -->
                     <div id="code-result-container" class="result-code-card">
@@ -1974,11 +2020,12 @@
                             <div class="tech-mono" style="margin-bottom: 8px;">PAIRING CODE GENERATED</div>
                             <div id="display-code" class="code-display">KAVZ-8924</div>
                             <p class="pair-instruction" id="pair-instruction-text">
-                                Open WhatsApp > <b>Linked Devices</b> > <b>Link with phone number</b> > Enter this code.
+                                WhatsApp විවෘත කරන්න > <b>Linked Devices</b> > <b>Link with phone number</b> > මෙම කේතය
+                                ලබාදෙන්න.
                             </p>
                             <button type="button" class="btn-pill-outline" id="copy-code-btn">
                                 <i class="fa-regular fa-copy"></i>
-                                <span id="copy-btn-text">Copy Code</span>
+                                <span id="copy-btn-text">Copy කරන්න</span>
                             </button>
                         </div>
                         <div id="pairing-success-content" style="display: none; text-align: center; padding: 20px;">
@@ -2003,26 +2050,26 @@
 
                 <!-- Left Info Column -->
                 <div class="tech-info-col reveal-element">
-                    <div class="section-label" id="t-label">OUR TECHNOLOGY</div>
+                    <div class="section-label" id="t-label">අපගේ තාක්ෂණය</div>
 
-                    <h2 class="tech-heading" id="t-head-en">
+                    <h2 class="tech-heading hidden" id="t-head-en">
                         More Than AI.<br>Complete Chat<br>Automation.
                     </h2>
-                    <h2 class="tech-heading hidden" id="t-head-si">
+                    <h2 class="tech-heading" id="t-head-si">
                         AI වලටත් වඩා.<br>පරිපූර්ණ<br>ස්වයංක්‍රීයකරණයක්.
                     </h2>
 
-                    <p class="tech-paragraph" id="t-desc-en">
+                    <p class="tech-paragraph hidden" id="t-desc-en">
                         We combine powerful automation tools and intelligent systems to handle your messaging, media
                         downloads, and daily tasks effortlessly.
                     </p>
-                    <p class="tech-paragraph hidden" id="t-desc-si">
+                    <p class="tech-paragraph" id="t-desc-si">
                         අපි දියුණු ස්මාර්ට් තාක්ෂණය යොදාගෙන ඔබේ පණිවිඩ යැවීම්, වීඩියෝ බාගත කිරීම් සහ දෛනික වැඩකටයුතු ඉතා
                         පහසුවෙන් ස්වයංක්‍රීය කරනවා.
                     </p>
 
                     <a href="#lineup" class="tech-link">
-                        <span id="t-link-text">Learn More</span>
+                        <span id="t-link-text">තවත් විස්තර</span>
                         <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i>
                     </a>
                 </div>
@@ -2036,8 +2083,8 @@
                         <div class="callout-pointer pointer-top" title="Ultra-durable, lightweight enclosure">
                             <div class="callout-line"></div>
                             <div class="callout-text">
-                                <h5 id="callout-1-title">PROTECTIVE SHELL</h5>
-                                <p id="callout-1-sub">Ultra-durable, lightweight</p>
+                                <h5 id="callout-1-title">ආරක්ෂිත කවචය</h5>
+                                <p id="callout-1-sub">ශක්තිමත්, බරින් අඩු ආවරණය</p>
                             </div>
                         </div>
 
@@ -2045,8 +2092,8 @@
                         <div class="callout-pointer pointer-mid" title="High-efficiency inference core">
                             <div class="callout-line"></div>
                             <div class="callout-text">
-                                <h5 id="callout-2-title">AI PROCESSOR</h5>
-                                <p id="callout-2-sub">High-efficiency inference</p>
+                                <h5 id="callout-2-title">AI ප්‍රොසෙසරය</h5>
+                                <p id="callout-2-sub">අධිවේගී බුද්ධිමත් මොඩියුලය</p>
                             </div>
                         </div>
 
@@ -2054,8 +2101,8 @@
                         <div class="callout-pointer pointer-bot" title="Built for real environments">
                             <div class="callout-line"></div>
                             <div class="callout-text">
-                                <h5 id="callout-3-title">MODULAR DESIGN</h5>
-                                <p id="callout-3-sub">Built for real environments</p>
+                                <h5 id="callout-3-title">මොඩියුලර් නිමාව</h5>
+                                <p id="callout-3-sub">ඕනෑම පරිසරයකට ගැලපෙන ලෙස</p>
                             </div>
                         </div>
                     </div>
@@ -2066,7 +2113,7 @@
                     <img src="assets/image_2.jpg" alt="Precision in Every Detail" class="precision-img">
                     <div class="precision-overlay">
                         <div class="precision-title" id="t-prec-title">
-                            PRECISION<br>IN EVERY<br>DETAIL.
+                            සෑම අංශයකින්ම<br>පූර්ණ<br>නිමාවක්.
                         </div>
                         <div class="precision-arrow-btn">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -2082,7 +2129,7 @@
              ======================================================== -->
         <section class="lineup-section" id="lineup">
             <div class="container">
-                <div class="section-label" id="lineup-section-label">PRODUCT LINEUP</div>
+                <div class="section-label" id="lineup-section-label">නිෂ්පාදන පෙළගැස්ම</div>
 
                 <div class="lineup-grid">
 
@@ -2090,8 +2137,8 @@
                     <div class="lineup-card tech-bracket reveal-element"
                         onclick="populateAndFocus('Social Downloader')">
                         <div class="card-header">
-                            <div class="card-name" id="c1-title">Codex</div>
-                            <div class="card-subtext" id="c1-sub">Edge AI Computer // Social Fetch</div>
+                            <div class="card-name" id="c1-title">Social Downloader</div>
+                            <div class="card-subtext" id="c1-sub">TikTok, FB, MP3 ස්වයංක්‍රීය බාගත කිරීම්</div>
                         </div>
                         <div class="card-visual">
                             <img src="assets/feat_social.jpg" alt="Codex Edge AI Computer">
@@ -2107,8 +2154,8 @@
                     <div class="lineup-card tech-bracket reveal-element delay-1"
                         onclick="populateAndFocus('Anti-Delete Vault')">
                         <div class="card-header">
-                            <div class="card-name" id="c2-title">Atlas</div>
-                            <div class="card-subtext" id="c2-sub">Vision Sensor // Memory Vault</div>
+                            <div class="card-name" id="c2-title">Anti-Delete Vault</div>
+                            <div class="card-subtext" id="c2-sub">මැකූ පණිවිඩ සහ View-Once බැලීම</div>
                         </div>
                         <div class="card-visual">
                             <img src="assets/feat_antidelete.jpg" alt="Atlas Vision Sensor">
@@ -2124,8 +2171,8 @@
                     <div class="lineup-card tech-bracket reveal-element delay-2"
                         onclick="populateAndFocus('PDF Engine')">
                         <div class="card-header">
-                            <div class="card-name" id="c3-title">Nexus</div>
-                            <div class="card-subtext" id="c3-sub">Robotics Controller // Doc Engine</div>
+                            <div class="card-name" id="c3-title">PDF Engine</div>
+                            <div class="card-subtext" id="c3-sub">පින්තූර PDF බවට පත් කිරීම</div>
                         </div>
                         <div class="card-visual">
                             <img src="assets/feat_pdf.jpg" alt="Nexus Robotics Controller">
@@ -2139,10 +2186,10 @@
 
                     <!-- Card 4: Orbit (Status & Reaction Sensor) -->
                     <div class="lineup-card tech-bracket reveal-element delay-3"
-                        onclick="populateAndFocus('Status Reaction')">
+                        onclick="populateAndFocus('Status React')">
                         <div class="card-header">
-                            <div class="card-name" id="c4-title">Orbit</div>
-                            <div class="card-subtext" id="c4-sub">Multi-Modal Sensor // Auto React</div>
+                            <div class="card-name" id="c4-title">Status React</div>
+                            <div class="card-subtext" id="c4-sub">Status වලට ස්වයංක්‍රීය Emoji React කිරීම</div>
                         </div>
                         <div class="card-visual">
                             <img src="assets/feat_react.jpg" alt="Orbit Multi-Modal Sensor">
@@ -2160,7 +2207,7 @@
                         <img src="assets/feat_movie.jpg" alt="Cinematic Horizon Modules" class="lhc-bg">
                         <div class="lhc-content">
                             <div class="lhc-title" id="lhc-heading">
-                                SMALL<br>MODULES.<br>BIGGER<br>POSSIBILITIES.
+                                ඕනෑම<br>චිත්‍රපටයක්.<br>කෙළින්ම<br>WHATSAPP එකට.
                             </div>
                             <div class="card-arrow-circle"
                                 style="border-color: var(--text-main); color: var(--text-main);">
@@ -2183,18 +2230,18 @@
                 <div class="movie-text-content reveal-element">
                     <div class="movie-tag">Direct WhatsApp Downloads</div>
 
-                    <h2 class="movie-title" id="m-title-en">
+                    <h2 class="movie-title hidden" id="m-title-en">
                         Cinematic Downloads.<br><span>Right in your chat.</span>
                     </h2>
-                    <h2 class="movie-title hidden" id="m-title-si">
+                    <h2 class="movie-title" id="m-title-si">
                         ඕනෑම චිත්‍රපටයක්.<br><span>කෙළින්ම WhatsApp එකට.</span>
                     </h2>
 
-                    <p class="movie-desc" id="m-desc-en">
+                    <p class="movie-desc hidden" id="m-desc-en">
                         No more searching through ad-filled websites. Just type the command followed by the movie name,
                         and the bot will instantly find and send the full video file directly to your WhatsApp.
                     </p>
-                    <p class="movie-desc hidden" id="m-desc-si">
+                    <p class="movie-desc" id="m-desc-si">
                         Ads පිරුණු වෙබ්සයිට් වල රස්තියාදු වෙන්න ඕනේ නෑ. චිත්‍රපටයේ නම type කරලා යවන්න. තත්පර කිහිපයකින්
                         මුළු චිත්‍රපටයම කෙළින්ම WhatsApp එකටම ගෙන්න ගන්න!
                     </p>
@@ -2282,18 +2329,18 @@
                 <div class="movie-text-content reveal-element delay-1">
                     <div class="movie-tag" style="color: #53bdeb;">Ultimate AI Assistant</div>
 
-                    <h2 class="movie-title" id="ai-title-en">
+                    <h2 class="movie-title hidden" id="ai-title-en">
                         Nexus AI.<br><span>Your personal genius.</span>
                     </h2>
-                    <h2 class="movie-title hidden" id="ai-title-si">
+                    <h2 class="movie-title" id="ai-title-si">
                         Nexus AI.<br><span>ඔබගේ බුද්ධිමත් සහයකයා.</span>
                     </h2>
 
-                    <p class="movie-desc" id="ai-desc-en">
+                    <p class="movie-desc hidden" id="ai-desc-en">
                         Experience the power of advanced AI directly in WhatsApp. Just type the command to ask
                         questions, write essays, translate text, or generate code. The possibilities are endless.
                     </p>
-                    <p class="movie-desc hidden" id="ai-desc-si">
+                    <p class="movie-desc" id="ai-desc-si">
                         ලොව දියුණුතම AI තාක්ෂණය දැන් ඔබේ WhatsApp එකටම. ඕනෑම ප්‍රශ්නයක් අහන්න, රචනා ලියන්න, භාෂා
                         පරිවර්තනය කරන්න හෝ Code ලියවගන්න. පිළිතුර තත්පරයකින්.
                     </p>
@@ -2315,35 +2362,35 @@
             <!-- Process Top Grid -->
             <div class="container process-header-grid">
                 <div class="process-title-col reveal-element">
-                    <div class="section-label" id="proc-label">HOW TO LINK</div>
-                    <h2 id="proc-title">Connect<br>in 4 Easy<br>Steps.</h2>
+                    <div class="section-label" id="proc-label">සම්බන්ධ කරන ආකාරය</div>
+                    <h2 id="proc-title">පහසු<br>පියවර<br>4කින්.</h2>
                 </div>
 
                 <div class="process-steps-grid reveal-element delay-1">
                     <!-- Step 01 -->
                     <div class="step-block tech-bracket">
                         <div class="step-num">01</div>
-                        <div class="step-name" id="s1-name">Get Code</div>
-                        <div class="step-desc" id="s1-desc">Enter your number and get the pairing code below.</div>
+                        <div class="step-name" id="s1-name">කේතය ගන්න</div>
+                        <div class="step-desc" id="s1-desc">ඔබගේ අංකය ඇතුළත් කර Pairing Code එක ලබාගන්න.</div>
                     </div>
                     <!-- Step 02 -->
                     <div class="step-block tech-bracket">
                         <div class="step-num">02</div>
-                        <div class="step-name" id="s2-name">Open WhatsApp</div>
-                        <div class="step-desc" id="s2-desc">Go to Settings and select Linked Devices.</div>
+                        <div class="step-name" id="s2-name">WhatsApp යන්න</div>
+                        <div class="step-desc" id="s2-desc">දුරකථනයේ Settings ගොස් Linked Devices තෝරන්න.</div>
                     </div>
                     <!-- Step 03 -->
                     <div class="step-block tech-bracket">
                         <div class="step-num">03</div>
-                        <div class="step-name" id="s3-name">Link Number</div>
-                        <div class="step-desc" id="s3-desc">Tap "Link a device" then "Link with phone number instead".
+                        <div class="step-name" id="s3-name">Number එකෙන් Link</div>
+                        <div class="step-desc" id="s3-desc">"Link a device" ඔබා "Link with phone number instead" දෙන්න.
                         </div>
                     </div>
                     <!-- Step 04 -->
                     <div class="step-block tech-bracket">
                         <div class="step-num">04</div>
-                        <div class="step-name" id="s4-name">Enter Code</div>
-                        <div class="step-desc" id="s4-desc">Type the 8-digit code to connect instantly.</div>
+                        <div class="step-name" id="s4-name">කේතය දෙන්න</div>
+                        <div class="step-desc" id="s4-desc">ලැබුණු කේතය ඇතුළත් කළ පසු Bot සම්බන්ධ වේ.</div>
                     </div>
                 </div>
             </div>
@@ -2442,7 +2489,7 @@
                 en: {
                     langBtn: "සිංහල",
                     navTagline: "WHATSAPP AUTOMATION PLATFORM",
-                    navItems: ["Products", "Technology", "Lineup", "Process"],
+                    navItems: ["Developer Contact", "Developer Portfolio", "Movie Download Web"],
                     navCta: "Link WhatsApp",
                     heroBadge: "BUILT FOR WHATSAPP",
                     heroDesc: "Kaveez Automation develops next-generation WhatsApp bot automations that manage your chats seamlessly and securely.",
@@ -2476,15 +2523,27 @@
                     s3N: "Link Number", s3D: "Tap \"Link a device\" then \"Link with phone number instead\".",
                     s4N: "Enter Code", s4D: "Type the 8-digit code to connect instantly.",
                     horizonMotto: "A MORE CAPABLE TOMORROW.",
-                    btnPair: "Join the Journey",
+                    btnPair: "Link WhatsApp Bot",
                     pairInstr: "Open WhatsApp > <b>Linked Devices</b> > <b>Link with phone number</b> > Enter this code.",
                     copyBtn: "Copy Code",
-                    toast: "Pairing code copied to clipboard!"
+                    toast: "Pairing code copied to clipboard!",
+                    planNotice: '<i class="fa-solid fa-gift" style="color: #38bdf8;"></i> Free Plan: <b>1 Movie View Included</b>',
+                    planCheckLink: '<i class="fa-solid fa-magnifying-glass"></i> Check My Plan & Views',
+                    aiNeedBtn: "Yes, I need AI 🤖",
+                    aiSkipBtn: "No, skip AI",
+                    aiProceedBtn: "Proceed & Get Code",
+                    aiDesc: "Do you want to enable the AI Agent? If yes, please provide your Groq API Key. If not, you can skip this step.",
+                    groqLinkText: "Click here to get your Free Groq API Key",
+                    groqWarnTitle: "Important Notice:",
+                    groqWarnDesc: "Make sure to copy and save your API Key securely right after creating it. You will not be able to view or retrieve it again afterwards!",
+                    videoGuideLabel: "Watch Video: How to get Groq API Key:",
+                    apiKeyRequired: "Please enter your Groq API Key or cancel",
+                    invalidPhone: "Please enter a valid phone number"
                 },
                 si: {
                     langBtn: "English",
-                    navTagline: "ස්මාර්ට් WHATSAPP සඳහා නවීන තාක්ෂණය",
-                    navItems: ["නිෂ්පාදන", "තාක්ෂණය", "මොඩියුල", "ක්‍රියාවලිය"],
+                    navTagline: "ස්මාර්ට් WHATSAPP ස්වයංක්‍රීයකරණ පද්ධතිය",
+                    navItems: ["සංවර්ධක සම්බන්ධතාවය", "සංවර්ධක තොරතුරු", "චිත්‍රපට වෙබ් අඩවිය"],
                     navCta: "WhatsApp සම්බන්ධ කරන්න",
                     heroBadge: "නියම කාර්යක්ෂමතාවය සඳහා",
                     heroDesc: "WhatsApp භාවිතය සම්පූර්ණයෙන්ම ස්වයංක්‍රීය කර පහසු කරන ලොව නවීනතම ස්මාර්ට් තාක්ෂණය.",
@@ -2518,109 +2577,141 @@
                     s3N: "Number එකෙන් Link", s3D: "\"Link a device\" ඔබා \"Link with phone number instead\" දෙන්න.",
                     s4N: "කේතය දෙන්න", s4D: "ලැබුණු කේතය ඇතුළත් කළ පසු Bot සම්බන්ධ වේ.",
                     horizonMotto: "වඩාත් පහසු WHATSAPP අත්දැකීමක්.",
-                    btnPair: "සම්බන්ධ වන්න",
+                    btnPair: "WhatsApp සම්බන්ධ කරන්න",
                     pairInstr: "WhatsApp විවෘත කරන්න > <b>Linked Devices</b> > <b>Link with phone number</b> > මෙම කේතය ලබාදෙන්න.",
                     copyBtn: "Copy කරන්න",
-                    toast: "කේතය සාර්ථකව Copy කරගන්නා ලදී!"
+                    toast: "කේතය සාර්ථකව Copy කරගන්නා ලදී!",
+                    planNotice: '<i class="fa-solid fa-gift" style="color: #38bdf8;"></i> නොමිලේ Plan එක: <b>චිත්‍රපට 1ක් ඇතුළත් වේ</b>',
+                    planCheckLink: '<i class="fa-solid fa-magnifying-glass"></i> Plan & Views බලන්න',
+                    aiNeedBtn: "ඔව්, AI අවශ්‍යයි 🤖",
+                    aiSkipBtn: "නැත, AI අවශ්‍ය නැත",
+                    aiProceedBtn: "ඉදිරියට ගොස් Code එක ගන්න",
+                    aiDesc: "ඔබට AI සහයකයා සක්‍රීය කිරීමට අවශ්‍යද? එසේ නම් Groq API Key එක ලබාදෙන්න. නැතහොත් මෙම පියවර මඟහැරිය හැක.",
+                    groqLinkText: "Groq API Key එක නොමිලේ ලබා ගැනීමට මෙතැන ඔබන්න",
+                    groqWarnTitle: "විශේෂ අවධානයට:",
+                    groqWarnDesc: "API Key එක Create කර Copy කරගන්නා අවස්ථාවේදීම එය සුරක්ෂිතව Copy කර තබාගන්න. පසුව එම Key එක නැවත බලාගැනීමට හෝ ලබාගැනීමට නොහැකි වනු ඇත!",
+                    videoGuideLabel: "වීඩියෝව නරඹා API Key එක සාදාගන්න:",
+                    apiKeyRequired: "කරුණාකර ඔබගේ Groq API Key එක ඇතුළත් කරන්න (නැතහොත් අවලංගු කරන්න)",
+                    invalidPhone: "කරුණාකර නිවැරදි දුරකථන අංකයක් ඇතුළත් කරන්න"
                 }
             };
 
-            let currentLang = 'en';
+            let currentLang = localStorage.getItem('bot_lang') || 'si';
 
-            langBtn.addEventListener('click', () => {
-                currentLang = currentLang === 'en' ? 'si' : 'en';
-                applyLanguage(currentLang);
-            });
+            function safeSetText(id, text) {
+                const el = document.getElementById(id);
+                if (el && text !== undefined) el.innerText = text;
+            }
+            function safeSetHtml(id, html) {
+                const el = document.getElementById(id);
+                if (el && html !== undefined) el.innerHTML = html;
+            }
+            function safeToggle(id, isVisible) {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (isVisible) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            }
 
             function applyLanguage(lang) {
                 const data = dictionary[lang];
-                langIndicator.innerText = data.langBtn;
-                document.getElementById('nav-tagline').innerText = data.navTagline;
-                document.getElementById('nav-item-1').innerText = data.navItems[0];
-                document.getElementById('nav-item-2').innerText = data.navItems[1];
-                document.getElementById('nav-item-3').innerText = data.navItems[2];
-                document.getElementById('nav-item-4').innerText = data.navItems[3];
-                document.getElementById('nav-cta-text').innerText = data.navCta;
+                if (!data) return;
 
-                document.getElementById('hero-badge-text').innerText = data.heroBadge;
-                if (lang === 'si') {
-                    document.getElementById('h-title-en').classList.add('hidden');
-                    document.getElementById('h-desc-en').classList.add('hidden');
-                    document.getElementById('t-head-en').classList.add('hidden');
-                    document.getElementById('t-desc-en').classList.add('hidden');
-                    document.getElementById('m-title-en').classList.add('hidden');
-                    document.getElementById('m-desc-en').classList.add('hidden');
-                    document.getElementById('ai-title-en').classList.add('hidden');
-                    document.getElementById('ai-desc-en').classList.add('hidden');
-
-                    document.getElementById('h-title-si').classList.remove('hidden');
-                    document.getElementById('h-desc-si').classList.remove('hidden');
-                    document.getElementById('t-head-si').classList.remove('hidden');
-                    document.getElementById('t-desc-si').classList.remove('hidden');
-                    document.getElementById('m-title-si').classList.remove('hidden');
-                    document.getElementById('m-desc-si').classList.remove('hidden');
-                    document.getElementById('ai-title-si').classList.remove('hidden');
-                    document.getElementById('ai-desc-si').classList.remove('hidden');
-                } else {
-                    document.getElementById('h-title-si').classList.add('hidden');
-                    document.getElementById('h-desc-si').classList.add('hidden');
-                    document.getElementById('t-head-si').classList.add('hidden');
-                    document.getElementById('t-desc-si').classList.add('hidden');
-                    document.getElementById('m-title-si').classList.add('hidden');
-                    document.getElementById('m-desc-si').classList.add('hidden');
-                    document.getElementById('ai-title-si').classList.add('hidden');
-                    document.getElementById('ai-desc-si').classList.add('hidden');
-
-                    document.getElementById('h-title-en').classList.remove('hidden');
-                    document.getElementById('h-desc-en').classList.remove('hidden');
-                    document.getElementById('t-head-en').classList.remove('hidden');
-                    document.getElementById('t-desc-en').classList.remove('hidden');
-                    document.getElementById('m-title-en').classList.remove('hidden');
-                    document.getElementById('m-desc-en').classList.remove('hidden');
-                    document.getElementById('ai-title-en').classList.remove('hidden');
-                    document.getElementById('ai-desc-en').classList.remove('hidden');
+                safeSetText('lang-indicator', data.langBtn);
+                safeSetText('nav-tagline', data.navTagline);
+                if (data.navItems) {
+                    safeSetText('nav-item-1', data.navItems[0]);
+                    safeSetText('nav-item-2', data.navItems[1]);
+                    safeSetText('nav-item-3', data.navItems[2]);
+                    safeSetText('f-link-1', data.navItems[0]);
+                    safeSetText('f-link-2', data.navItems[1]);
+                    safeSetText('f-link-3', data.navItems[2]);
                 }
+                safeSetText('nav-cta-text', data.navCta);
+                safeSetText('hero-badge-text', data.heroBadge);
 
-                document.getElementById('h-cta-text').innerText = data.heroCta;
-                document.getElementById('h-tracker-sub').innerText = data.heroTracker;
-                document.getElementById('h-spec-motto').innerText = data.heroSpecMotto;
-                document.getElementById('sys-cap-head').innerText = data.sysCapHead;
-                document.getElementById('sys-cap-1').innerText = data.sysCap1;
-                document.getElementById('sys-cap-2').innerText = data.sysCap2;
-                document.getElementById('sys-cap-3').innerText = data.sysCap3;
-                document.getElementById('sys-cap-4').innerText = data.sysCap4;
-                document.getElementById('sys-cap-5').innerText = data.sysCap5;
-                document.getElementById('h-intel-label').innerText = data.intelLabel;
+                const isSinhala = lang === 'si';
+                safeToggle('h-title-si', isSinhala);
+                safeToggle('h-desc-si', isSinhala);
+                safeToggle('t-head-si', isSinhala);
+                safeToggle('t-desc-si', isSinhala);
+                safeToggle('m-title-si', isSinhala);
+                safeToggle('m-desc-si', isSinhala);
+                safeToggle('ai-title-si', isSinhala);
+                safeToggle('ai-desc-si', isSinhala);
 
-                document.getElementById('t-label').innerText = data.techLabel;
-                document.getElementById('t-link-text').innerText = data.techLink;
-                document.getElementById('callout-1-title').innerText = data.callout1T;
-                document.getElementById('callout-1-sub').innerText = data.callout1S;
-                document.getElementById('callout-2-title').innerText = data.callout2T;
-                document.getElementById('callout-2-sub').innerText = data.callout2S;
-                document.getElementById('callout-3-title').innerText = data.callout3T;
-                document.getElementById('callout-3-sub').innerText = data.callout3S;
-                document.getElementById('t-prec-title').innerHTML = data.precTitle;
+                safeToggle('h-title-en', !isSinhala);
+                safeToggle('h-desc-en', !isSinhala);
+                safeToggle('t-head-en', !isSinhala);
+                safeToggle('t-desc-en', !isSinhala);
+                safeToggle('m-title-en', !isSinhala);
+                safeToggle('m-desc-en', !isSinhala);
+                safeToggle('ai-title-en', !isSinhala);
+                safeToggle('ai-desc-en', !isSinhala);
 
-                document.getElementById('lineup-section-label').innerText = data.lineupLabel;
-                document.getElementById('c1-title').innerText = data.c1T; document.getElementById('c1-sub').innerText = data.c1S;
-                document.getElementById('c2-title').innerText = data.c2T; document.getElementById('c2-sub').innerText = data.c2S;
-                document.getElementById('c3-title').innerText = data.c3T; document.getElementById('c3-sub').innerText = data.c3S;
-                document.getElementById('c4-title').innerText = data.c4T; document.getElementById('c4-sub').innerText = data.c4S;
-                document.getElementById('lhc-heading').innerHTML = data.lhcHead;
+                safeSetText('h-cta-text', data.heroCta);
+                safeSetText('h-tracker-sub', data.heroTracker);
+                safeSetText('h-spec-motto', data.heroSpecMotto);
+                safeSetText('sys-cap-head', data.sysCapHead);
+                safeSetText('sys-cap-1', data.sysCap1);
+                safeSetText('sys-cap-2', data.sysCap2);
+                safeSetText('sys-cap-3', data.sysCap3);
+                safeSetText('sys-cap-4', data.sysCap4);
+                safeSetText('sys-cap-5', data.sysCap5);
+                safeSetText('h-intel-label', data.intelLabel);
 
-                document.getElementById('proc-label').innerText = data.procLabel;
-                document.getElementById('proc-title').innerHTML = data.procTitle;
-                document.getElementById('s1-name').innerText = data.s1N; document.getElementById('s1-desc').innerText = data.s1D;
-                document.getElementById('s2-name').innerText = data.s2N; document.getElementById('s2-desc').innerText = data.s2D;
-                document.getElementById('s3-name').innerText = data.s3N; document.getElementById('s3-desc').innerText = data.s3D;
-                document.getElementById('s4-name').innerText = data.s4N; document.getElementById('s4-desc').innerText = data.s4D;
+                safeSetText('t-label', data.techLabel);
+                safeSetText('t-link-text', data.techLink);
+                safeSetText('callout-1-title', data.callout1T);
+                safeSetText('callout-1-sub', data.callout1S);
+                safeSetText('callout-2-title', data.callout2T);
+                safeSetText('callout-2-sub', data.callout2S);
+                safeSetText('callout-3-title', data.callout3T);
+                safeSetText('callout-3-sub', data.callout3S);
+                safeSetHtml('t-prec-title', data.precTitle);
 
-                document.getElementById('horizon-motto-text').innerText = data.horizonMotto;
-                document.getElementById('btn-pair-text').innerText = data.btnPair;
-                document.getElementById('pair-instruction-text').innerHTML = data.pairInstr;
-                document.getElementById('copy-btn-text').innerText = data.copyBtn;
+                safeSetText('lineup-section-label', data.lineupLabel);
+                safeSetText('c1-title', data.c1T); safeSetText('c1-sub', data.c1S);
+                safeSetText('c2-title', data.c2T); safeSetText('c2-sub', data.c2S);
+                safeSetText('c3-title', data.c3T); safeSetText('c3-sub', data.c3S);
+                safeSetText('c4-title', data.c4T); safeSetText('c4-sub', data.c4S);
+                safeSetHtml('lhc-heading', data.lhcHead);
+
+                safeSetText('proc-label', data.procLabel);
+                safeSetHtml('proc-title', data.procTitle);
+                safeSetText('s1-name', data.s1N); safeSetText('s1-desc', data.s1D);
+                safeSetText('s2-name', data.s2N); safeSetText('s2-desc', data.s2D);
+                safeSetText('s3-name', data.s3N); safeSetText('s3-desc', data.s3D);
+                safeSetText('s4-name', data.s4N); safeSetText('s4-desc', data.s4D);
+
+                safeSetText('horizon-motto-text', data.horizonMotto);
+                safeSetText('btn-pair-text', data.btnPair);
+                safeSetHtml('pair-instruction-text', data.pairInstr);
+                safeSetText('copy-btn-text', data.copyBtn);
+                safeSetHtml('plan-notice-text', data.planNotice);
+                safeSetHtml('check-plan-link-text', data.planCheckLink);
+
+                safeSetText('btn-need-ai', data.aiNeedBtn);
+                safeSetText('btn-skip-ai', data.aiSkipBtn);
+                safeSetText('btn-proceed-ai', data.aiProceedBtn);
+                safeSetText('ai-modal-desc', data.aiDesc);
+                safeSetText('groq-link-text', data.groqLinkText);
+                safeSetText('groq-warn-title', data.groqWarnTitle);
+                safeSetText('groq-warn-desc', data.groqWarnDesc);
+                safeSetText('video-guide-label', data.videoGuideLabel);
             }
+
+            if (langBtn) {
+                langBtn.addEventListener('click', () => {
+                    currentLang = currentLang === 'en' ? 'si' : 'en';
+                    localStorage.setItem('bot_lang', currentLang);
+                    applyLanguage(currentLang);
+                });
+            }
+
+            // Immediately apply Sinhala default
+            applyLanguage(currentLang);
 
             /* ----------------------------------------------------
                5. Live Audio Waveform Canvas Animation
@@ -2691,31 +2782,42 @@
             const apiKeyContainer = document.getElementById('api-key-container');
             const apiKeyModalInput = document.getElementById('api-key-modal');
 
+            function resetAiModalState() {
+                apiKeyContainer.style.display = 'none';
+                apiKeyContainer.classList.remove('input-error-shake');
+                const inlineAlert = document.getElementById('api-key-inline-alert');
+                if (inlineAlert) inlineAlert.style.display = 'none';
+                const apiKeyHelper = document.getElementById('api-key-helper');
+                if (apiKeyHelper) apiKeyHelper.style.display = 'none';
+                const apiKeyVideo = document.getElementById('apiKeyVideo');
+                if (apiKeyVideo) { apiKeyVideo.pause(); apiKeyVideo.currentTime = 0; }
+                btnNeedAi.style.display = 'block';
+                btnSkipAi.style.display = 'block';
+                btnProceedAi.style.display = 'none';
+                apiKeyModalInput.value = '';
+            }
+
             pairForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const rawVal = phoneInput.value.replace(/[^0-9]/g, '');
 
                 if (rawVal.length < 8) {
-                    showToast('Please enter a valid phone number');
+                    const phoneErr = dictionary[currentLang]?.invalidPhone || (currentLang === 'si' ? 'කරුණාකර නිවැරදි දුරකථන අංකයක් ඇතුළත් කරන්න' : 'Please enter a valid phone number');
+                    showToast(phoneErr, true);
                     phoneInput.focus();
                     return;
                 }
 
                 // Show AI Modal
                 aiModal.style.display = 'flex';
-
-                // Reset Modal State
-                apiKeyContainer.style.display = 'none';
-                btnNeedAi.style.display = 'block';
-                btnSkipAi.style.display = 'block';
-                btnProceedAi.style.display = 'none';
-                apiKeyModalInput.value = '';
+                resetAiModalState();
             });
 
             let pollingInterval;
 
             function executePairing(apiKey = '') {
                 aiModal.style.display = 'none';
+                resetAiModalState();
                 const rawVal = phoneInput.value.replace(/[^0-9]/g, '');
 
                 // Reset UI
@@ -2758,7 +2860,7 @@
                         console.error(err);
                         btnPairText.innerText = ogText;
                         btnPairIcon.className = 'fa-solid fa-arrow-up-right-from-square';
-                        showToast(currentLang === 'si' ? 'දෝෂයක්! කරුණාකර නැවත උත්සාහ කරන්න.' : 'Error generating code. Is backend running?');
+                        showToast(currentLang === 'si' ? 'දෝෂයක්! කරුණාකර නැවත උත්සාහ කරන්න.' : 'Error generating code. Is backend running?', true);
                     });
             }
 
@@ -2766,6 +2868,11 @@
                 btnNeedAi.style.display = 'none';
                 btnSkipAi.style.display = 'none';
                 apiKeyContainer.style.display = 'flex';
+                apiKeyContainer.classList.remove('input-error-shake');
+                const inlineAlert = document.getElementById('api-key-inline-alert');
+                if (inlineAlert) inlineAlert.style.display = 'none';
+                const apiKeyHelper = document.getElementById('api-key-helper');
+                if (apiKeyHelper) apiKeyHelper.style.display = 'block';
                 btnProceedAi.style.display = 'block';
                 apiKeyModalInput.focus();
             });
@@ -2774,10 +2881,34 @@
                 executePairing('');
             });
 
+            apiKeyModalInput.addEventListener('input', () => {
+                const inlineAlert = document.getElementById('api-key-inline-alert');
+                if (inlineAlert) inlineAlert.style.display = 'none';
+                apiKeyContainer.classList.remove('input-error-shake');
+            });
+
             btnProceedAi.addEventListener('click', () => {
                 const key = apiKeyModalInput.value.trim();
                 if (!key) {
-                    showToast('Please enter your API Key or cancel');
+                    const reqMsg = dictionary[currentLang]?.apiKeyRequired || (currentLang === 'si' ? 'කරුණාකර ඔබගේ Groq API Key එක ඇතුළත් කරන්න (නැතහොත් අවලංගු කරන්න)' : 'Please enter your Groq API Key or cancel');
+
+                    // 1. Show high-visibility toast on top (z-index: 100000)
+                    showToast(reqMsg, true);
+
+                    // 2. Show in-modal warning banner
+                    const inlineAlert = document.getElementById('api-key-inline-alert');
+                    const inlineAlertText = document.getElementById('api-key-inline-alert-text');
+                    if (inlineAlert && inlineAlertText) {
+                        inlineAlertText.innerText = reqMsg;
+                        inlineAlert.style.display = 'flex';
+                    }
+
+                    // 3. Shake and highlight input box
+                    apiKeyContainer.classList.remove('input-error-shake');
+                    void apiKeyContainer.offsetWidth; // force DOM reflow
+                    apiKeyContainer.classList.add('input-error-shake');
+
+                    apiKeyModalInput.focus();
                     return;
                 }
                 executePairing(key);
@@ -2800,12 +2931,20 @@
                 });
             });
 
-            function showToast(msg) {
+            let toastTimer;
+            function showToast(msg, isError = false) {
                 toast.innerText = msg;
+                if (isError) {
+                    toast.classList.add('toast-error');
+                } else {
+                    toast.classList.remove('toast-error');
+                }
                 toast.classList.add('show');
-                setTimeout(() => {
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
                     toast.classList.remove('show');
-                }, 3000);
+                    toast.classList.remove('toast-error');
+                }, 3500);
             }
 
         });
@@ -2833,7 +2972,9 @@
             padding: 30px;
             border-radius: 20px;
             width: 90%;
-            max-width: 400px;
+            max-width: 460px;
+            max-height: 92vh;
+            overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             text-align: center;
             position: relative;
@@ -2865,10 +3006,64 @@
             </p>
 
             <div id="api-key-container"
-                style="display: none; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; margin-bottom: 20px; align-items: center;">
+                style="display: none; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; margin-bottom: 12px; align-items: center;">
                 <i class="fa-solid fa-key" style="color: var(--accent); margin-right: 10px;"></i>
                 <input type="text" id="api-key-modal" placeholder="Groq API Key (gsk_...)"
                     style="background: transparent; border: none; outline: none; color: white; width: 100%; font-family: inherit;">
+            </div>
+
+            <!-- Groq API Key Link & Safe Copy Warning Box -->
+            <div id="api-key-helper" style="display: none; margin-bottom: 20px; text-align: left; font-size: 0.85rem;">
+                <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer"
+                    style="display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-bottom: 10px; font-size: 0.88rem; transition: background 0.2s;"
+                    onmouseover="this.style.background='rgba(245, 158, 11, 0.2)'"
+                    onmouseout="this.style.background='rgba(245, 158, 11, 0.12)'">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span id="groq-link-text">Groq API Key එක නොමිලේ ලබා ගැනීමට මෙතැන ඔබන්න</span>
+                </a>
+
+                <div
+                    style="background: rgba(239, 68, 68, 0.08); border-left: 3px solid #ef4444; border-radius: 6px; padding: 10px 12px; color: #fca5a5; line-height: 1.45; font-size: 0.8rem;">
+                    <div
+                        style="font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; color: #f87171;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span id="groq-warn-title">විශේෂ අවධානයට:</span>
+                    </div>
+                    <span id="groq-warn-desc">
+                        API Key එක සාදාගත් (Create) විගස එය සුරක්ෂිතව Copy කර Save කර තබාගන්න. මන්ද පසුව එම Key එක නැවත
+                        බලාගැනීමට හෝ ලබාගැනීමට නොහැකි වනු ඇත!
+                    </span>
+                </div>
+
+                <!-- Video Guide Player -->
+                <div class="video-guide-wrapper"
+                    style="margin-top: 14px; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
+                    <div
+                        style="padding: 8px 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 0.78rem;">
+                        <span style="display: flex; align-items: center; gap: 6px; color: #38bdf8; font-weight: 600;">
+                            <i class="fa-solid fa-circle-play" style="color: #38bdf8;"></i>
+                            <span id="video-guide-label">වීඩියෝව නරඹා API Key එක සාදාගන්න:</span>
+                        </span>
+                        <span
+                            style="font-size: 0.7rem; color: #38bdf8; background: rgba(56, 189, 248, 0.15); padding: 2px 6px; border-radius: 4px; font-weight: 600;">Tutorial</span>
+                    </div>
+                    <div style="position: relative; width: 100%; background: #000; overflow: hidden;">
+                        <video id="apiKeyVideo" controls playsinline preload="metadata"
+                            style="width: 100%; display: block; max-height: 220px; object-fit: contain; background: #000; outline: none;">
+                            <source src="assets/api-key.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In-Modal Error Warning Alert -->
+            <div id="api-key-inline-alert"
+                style="display: none; background: rgba(239, 68, 68, 0.16); border: 1px solid #ef4444; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; color: #fca5a5; font-size: 0.84rem; font-weight: 500; text-align: left; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-triangle-exclamation"
+                    style="color: #ef4444; font-size: 1.1rem; flex-shrink: 0;"></i>
+                <span id="api-key-inline-alert-text">කරුණාකර ඔබගේ Groq API Key එක ඇතුළත් කරන්න (නැතහොත් අවලංගු
+                    කරන්න).</span>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -2885,6 +3080,148 @@
             </div>
         </div>
     </div>
+
+    <!-- User Plan & View Tracking Modal -->
+    <div id="plan-modal" class="ai-modal-overlay">
+        <div class="ai-modal-content"
+            style="max-width: 440px; text-align: left; background: #0e111a; border: 1px solid rgba(255, 255, 255, 0.12);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: white; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;">
+                    <i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Plan & View Tracker
+                </h3>
+                <button type="button" onclick="closePlanModal()"
+                    style="background: none; border: none; color: var(--text-muted); font-size: 1.25rem; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px; line-height: 1.4;">
+                ඔබගේ WhatsApp අංකය ඇතුළත් කර ඔබගේ Plan එක (Free 1-View හෝ Premium) සහ චිත්‍රපට කීයක් නරඹා ඇත්දැයි
+                පරීක්ෂා කරන්න.
+            </p>
+
+            <div
+                style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 6px 12px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-mobile-screen" style="color: #3b82f6;"></i>
+                <input type="tel" id="plan-check-phone" placeholder="94 7X XXX XXXX"
+                    style="background: transparent; border: none; outline: none; color: white; width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem;">
+                <button type="button" onclick="checkUserPlan()" class="btn-submit-code"
+                    style="padding: 8px 16px; font-size: 0.8rem; border-radius: 8px; white-space: nowrap;">
+                    පරීක්ෂා කරන්න
+                </button>
+            </div>
+
+            <!-- Result Box -->
+            <div id="plan-result-box"
+                style="display: none; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 16px; margin-bottom: 15px;">
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="button" onclick="closePlanModal()" class="btn-skip-modal"
+                    style="width: 100%; border-radius: 8px;">
+                    වසන්න
+                </button>
+                <a href="https://wa.me/94760246304?text=Hello%20Admin,%20I%20want%20to%20get%20Premium%20for%20unlimited%20movies"
+                    target="_blank" class="btn-submit-code"
+                    style="width: 100%; border-radius: 8px; text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                    <i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Upgrade
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openPlanModal() {
+            const userPhoneInput = document.getElementById('user-phone');
+            if (userPhoneInput && userPhoneInput.value) {
+                document.getElementById('plan-check-phone').value = userPhoneInput.value;
+                checkUserPlan();
+            }
+            const modal = document.getElementById('plan-modal');
+            modal.style.display = 'flex';
+        }
+
+        function closePlanModal() {
+            const modal = document.getElementById('plan-modal');
+            modal.style.display = 'none';
+        }
+
+        async function checkUserPlan() {
+            const phoneInput = document.getElementById('plan-check-phone');
+            let phone = phoneInput.value.trim().replace(/[^0-9]/g, '');
+            if (!phone) {
+                alert('කරුණාකර ඔබගේ WhatsApp අංකය ඇතුළත් කරන්න (උදා: 94760246304)');
+                return;
+            }
+
+            const resultBox = document.getElementById('plan-result-box');
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = '<div style="text-align:center; padding: 15px; color: var(--text-muted);"><i class="fa-solid fa-spinner fa-spin" style="color: #3b82f6; margin-right: 8px;"></i> පරීක්ෂා කරමින් පවතී...</div>';
+
+            try {
+                const apiBase = (window.location.origin.includes('wpbot.kaveez.top') || window.location.port === '3055') ? '' : 'https://wpbot.kaveez.top';
+                const res = await fetch(`${apiBase}/api/check-plan?number=${phone}`);
+                const data = await res.json();
+
+                if (data.success && (data.isConnected || data.sessionStatus === 'connected' || data.isAdmin)) {
+                    let badgeHtml = '';
+                    if (data.isAdmin) {
+                        badgeHtml = '<span style="color: #c084fc; font-weight: 700;">👑 VIP / Admin</span>';
+                    } else if (data.isPremiumActive) {
+                        badgeHtml = '<span style="color: #fbbf24; font-weight: 700;">⭐ Premium (Unlimited)</span>';
+                    } else {
+                        badgeHtml = '<span style="color: #38bdf8; font-weight: 700;">👤 Free Plan (1 View Limit)</span>';
+                    }
+
+                    let remHtml = '';
+                    if (data.isAdmin || data.isPremiumActive) {
+                        remHtml = '<span style="color: #fbbf24; font-weight: 700;"><i class="fa-solid fa-infinity"></i> Unlimited</span>';
+                    } else if (data.isExceeded) {
+                        remHtml = '<span style="color: #ef4444; font-weight: 700;"><i class="fa-solid fa-ban"></i> 0 Left (Limit Reached)</span>';
+                    } else {
+                        remHtml = '<span style="color: #10b981; font-weight: 700;"><i class="fa-solid fa-check"></i> 1 View Left</span>';
+                    }
+
+                    resultBox.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">Number</span>
+                            <span style="font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #fff;">${data.phoneNumber}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">Current Plan</span>
+                            <span>${badgeHtml}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">Films Watched (Month)</span>
+                            <span style="font-weight: 700; color: #fff;">${data.filmsWatched} / ${data.isPremiumActive || data.isAdmin ? '∞' : '1'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">Remaining Views</span>
+                            <span>${remHtml}</span>
+                        </div>
+                    `;
+                } else {
+                    resultBox.innerHTML = `
+                        <div style="text-align: center; padding: 14px 10px; margin-bottom: 12px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 10px;">
+                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.2rem; color: #ef4444; margin-bottom: 8px;"></i>
+                            <h4 style="color: #f87171; margin-bottom: 6px; font-size: 0.95rem;">මෙම අංකය Bot සමඟ සම්බන්ධ කර නොමැත!</h4>
+                            <p style="color: var(--text-muted); font-size: 0.82rem; line-height: 1.45; margin-bottom: 12px;">
+                                කරුණාකර පළමුව Bot එක Link කර, ඉන්පසු Plan එක බලන්න හෝ Upgrade කරන්න!
+                            </p>
+                            <a href="#connect" onclick="closePlanModal()" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: rgba(37, 211, 102, 0.15); border: 1px solid #25D366; color: #25D366; border-radius: 8px; font-size: 0.85rem; text-decoration: none; font-weight: 600;">
+                                <i class="fa-brands fa-whatsapp"></i> දැන්ම Bot Link කරගන්න
+                            </a>
+                        </div>
+                        <a href="https://wa.me/94760246304?text=Hello%20Admin,%20I%20want%20to%20get%20Premium%20for%20unlimited%20movies" target="_blank" class="btn-submit-code" style="width: 100%; border-radius: 8px; text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                            <i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Upgrade කිරීමට Admin අමතන්න (0760246304)
+                        </a>
+                    `;
+                }
+            } catch (err) {
+                resultBox.innerHTML = '<div style="color: #ef4444; text-align: center; padding: 10px;">දත්ත ලබාගැනීමට නොහැකි විය. සර්වරය පරීක්ෂා කරන්න.</div>';
+            }
+        }
+    </script>
 </body>
 
 </html>
