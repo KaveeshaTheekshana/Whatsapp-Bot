@@ -9,6 +9,17 @@
     <link rel="shortcut icon" type="image/png" href="bot-favicon.png">
     <link rel="apple-touch-icon" href="bot-favicon.png">
 
+    <!-- Preload all optimized site visuals in parallel so every image loads together instantly -->
+    <link rel="preload" as="image" href="assets/hero_kaveez.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/earth_horizon.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/image_1.jpg">
+    <link rel="preload" as="image" href="assets/image_2.jpg">
+    <link rel="preload" as="image" href="assets/feat_social.jpg">
+    <link rel="preload" as="image" href="assets/feat_antidelete.jpg">
+    <link rel="preload" as="image" href="assets/feat_pdf.jpg">
+    <link rel="preload" as="image" href="assets/feat_react.jpg">
+    <link rel="preload" as="image" href="assets/feat_movie.jpg">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1261,12 +1272,47 @@
         }
 
         /* ========================================================
-           SCROLL REVEAL ANIMATIONS (Lag-Free IntersectionObserver)
+           ALL-AT-ONCE IMAGE PRELOADER & INSTANT SMOOTH REVEAL
            ======================================================== */
+        #site-preloader {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            opacity: 1;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        #site-preloader.is-done {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .preloader-ring {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2.5px solid rgba(255, 255, 255, 0.12);
+            border-top-color: #25D366;
+            animation: preloadSpin 0.65s linear infinite;
+        }
+
+        @keyframes preloadSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .reveal-element {
             opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(12px);
+            transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
 
@@ -1275,20 +1321,11 @@
             transform: translateY(0);
         }
 
-        .delay-1 {
-            transition-delay: 0.1s;
-        }
-
-        .delay-2 {
-            transition-delay: 0.2s;
-        }
-
-        .delay-3 {
-            transition-delay: 0.3s;
-        }
-
+        .delay-1,
+        .delay-2,
+        .delay-3,
         .delay-4 {
-            transition-delay: 0.4s;
+            transition-delay: 0s;
         }
 
         /* Toast Notification */
@@ -1817,6 +1854,11 @@
 
 <body>
 
+    <!-- All-at-once Asset Preloader (Reveals full page together once all visuals are decoded) -->
+    <div id="site-preloader" aria-hidden="true">
+        <div class="preloader-ring"></div>
+    </div>
+
     <!-- Scroll Progress Indicator -->
     <div id="scroll-progress"></div>
 
@@ -1901,7 +1943,7 @@
                     <div class="hud-tag bottom-left">CORE_STATUS // NOMINAL</div>
 
                     <div class="hero-image-wrap">
-                        <img src="assets/hero_kaveez.jpg" alt="Kaveez Automation System" class="hero-main-img">
+                        <img src="assets/hero_kaveez.jpg" alt="Kaveez Automation System" class="hero-main-img" fetchpriority="high" decoding="sync">
                     </div>
                 </div>
 
@@ -1941,7 +1983,7 @@
             <div class="earth-horizon-stage" id="connect">
 
                 <!-- Static Earth Orbit Image Background -->
-                <img src="assets/earth_horizon.jpg" alt="Link WhatsApp Horizon" class="earth-video-layer">
+                <img src="assets/earth_horizon.jpg" alt="Link WhatsApp Horizon" class="earth-video-layer" fetchpriority="high" decoding="sync">
 
                 <!-- Masks and Atmosphere Arc -->
                 <div class="earth-mask-layer"></div>
@@ -1951,8 +1993,8 @@
                 <div class="horizon-center-content reveal-element">
                     <!-- Pairing Form -->
                     <form id="pairing-form" class="pair-capsule-form" autocomplete="off">
-                        <div class="prefix-badge">+</div>
-                        <input type="tel" id="user-phone" class="phone-field" placeholder="94 7X XXX XXXX" required>
+                        <div class="prefix-badge"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 1.15rem;"></i></div>
+                        <input type="tel" id="user-phone" class="phone-field" placeholder="07X XXX XXXX  /  94 7X XXX XXXX" required>
                         <button type="submit" id="btn-get-code" class="btn-submit-code">
                             <span id="btn-pair-text">Get Pairing Code</span>
                             <i class="fa-solid fa-arrow-up-right-from-square" id="btn-pair-icon"></i>
@@ -1963,7 +2005,7 @@
                     <div
                         style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 0.82rem; color: #10b981; font-weight: 600;">
                         <span id="plan-notice-text"><i class="fa-solid fa-shield-halved" style="color: #25D366;"></i>
-                            Link via 8-Digit Pairing Code</span>
+                            07X හෝ 94 7X ඕනෑම ආකාරයකින් අංකය යොදා Link කරන්න</span>
                     </div>
 
                     <!-- Code Result Card -->
@@ -1998,6 +2040,13 @@
                                     එවලා සියලුම පහසුකම් භාවිතා කරන්න!
                                 </span>
                             </p>
+                            <div id="force-relink-wrap" style="display: none; margin-top: 16px;">
+                                <button type="button" class="btn-pill-outline" id="force-relink-btn"
+                                    style="border-color: rgba(239, 68, 68, 0.55); color: #fca5a5; font-size: 0.8rem;">
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    <span>නව Session එකකින් නැවත Link කරන්න</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -2307,6 +2356,50 @@
         document.addEventListener('DOMContentLoaded', () => {
 
             /* ----------------------------------------------------
+               0. All-at-Once Image Decode Gate (No Choppy Load)
+               ---------------------------------------------------- */
+            const preloader = document.getElementById('site-preloader');
+            const revealAllReady = () => {
+                if (preloader && !preloader.classList.contains('is-done')) {
+                    preloader.classList.add('is-done');
+                    setTimeout(() => { try { preloader.remove(); } catch (e) { } }, 320);
+                }
+                document.querySelectorAll('.reveal-element').forEach(el => el.classList.add('is-visible'));
+            };
+
+            const allAssetUrls = [
+                'assets/hero_kaveez.jpg',
+                'assets/earth_horizon.jpg',
+                'assets/image_1.jpg',
+                'assets/image_2.jpg',
+                'assets/feat_social.jpg',
+                'assets/feat_antidelete.jpg',
+                'assets/feat_pdf.jpg',
+                'assets/feat_react.jpg',
+                'assets/feat_movie.jpg'
+            ];
+
+            const imgTasks = allAssetUrls.map(src => new Promise(resolve => {
+                const img = new Image();
+                img.src = src;
+                if (img.complete) {
+                    if (typeof img.decode === 'function') img.decode().then(resolve).catch(resolve);
+                    else resolve();
+                } else {
+                    img.onload = () => {
+                        if (typeof img.decode === 'function') img.decode().then(resolve).catch(resolve);
+                        else resolve();
+                    };
+                    img.onerror = resolve;
+                }
+            }));
+
+            Promise.race([
+                Promise.all(imgTasks),
+                new Promise(resolve => setTimeout(resolve, 1400))
+            ]).then(revealAllReady);
+
+            /* ----------------------------------------------------
                1. Scroll Progress Bar
                ---------------------------------------------------- */
             const progressBar = document.getElementById('scroll-progress');
@@ -2319,7 +2412,7 @@
             }, { passive: true });
 
             /* ----------------------------------------------------
-               2. Scroll Reveal Observer (Lag-Free)
+               2. Scroll Reveal Observer (Instant & Lag-Free)
                ---------------------------------------------------- */
             const revealElements = document.querySelectorAll('.reveal-element');
             const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -2329,7 +2422,7 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.12 });
+            }, { threshold: 0.05 });
 
             revealElements.forEach(el => revealObserver.observe(el));
 
@@ -2419,30 +2512,57 @@
                 throw lastErr || new Error('Backend unreachable');
             }
 
+            function normalizePhoneInput(raw) {
+                let digits = String(raw || '').replace(/[^0-9]/g, '');
+                if (!digits) return '';
+                if (digits.startsWith('00') && digits.length >= 12) {
+                    digits = digits.substring(2);
+                }
+                if (digits.startsWith('940') && digits.length === 12) {
+                    digits = '94' + digits.substring(3);
+                } else if (digits.startsWith('0') && digits.length === 10) {
+                    digits = '94' + digits.substring(1);
+                } else if (digits.length === 9 && /^[1-9]/.test(digits)) {
+                    digits = '94' + digits;
+                } else if (digits.startsWith('0') && digits.length > 10) {
+                    digits = digits.replace(/^0+/, '');
+                }
+                return digits;
+            }
+
             pairForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const rawVal = phoneInput.value.replace(/[^0-9]/g, '');
+                const normalizedNum = normalizePhoneInput(phoneInput.value);
 
-                if (rawVal.length < 8) {
-                    showToast('Please enter a valid phone number', true);
+                if (normalizedNum.length < 10 || normalizedNum.length > 15) {
+                    showToast('කරුණාකර නිවැරදි WhatsApp අංකයක් ඇතුළත් කරන්න (උදා: 076... හෝ 9476...)', true);
                     phoneInput.focus();
                     return;
                 }
 
-                executePairing();
+                executePairing(false);
             });
+
+            const forceRelinkBtn = document.getElementById('force-relink-btn');
+            if (forceRelinkBtn) {
+                forceRelinkBtn.addEventListener('click', () => {
+                    executePairing(true);
+                });
+            }
 
             let pollingInterval;
 
-            function startStatusPolling(rawVal) {
+            function startStatusPolling(normalizedNum) {
                 pollingInterval = setInterval(() => {
-                    fetch(`${activeBackendBase}/status?number=${encodeURIComponent(rawVal)}`)
+                    fetch(`${activeBackendBase}/status?number=${encodeURIComponent(normalizedNum)}`)
                         .then(res => res.json())
                         .then(data => {
                             if (data.status === 'connected') {
                                 clearInterval(pollingInterval);
                                 document.getElementById('pairing-code-content').style.display = 'none';
                                 document.getElementById('pairing-success-content').style.display = 'block';
+                                const relinkWrap = document.getElementById('force-relink-wrap');
+                                if (relinkWrap) relinkWrap.style.display = 'none';
                                 showToast('සාර්ථකව සම්බන්ධ වුණා!');
                             }
                         })
@@ -2450,21 +2570,29 @@
                 }, 2500);
             }
 
-            function executePairing() {
-                const rawVal = phoneInput.value.replace(/[^0-9]/g, '');
+            function executePairing(forceFresh = false) {
+                const normalizedNum = normalizePhoneInput(phoneInput.value);
+                if (normalizedNum.length < 10 || normalizedNum.length > 15) {
+                    showToast('කරුණාකර නිවැරදි WhatsApp අංකයක් ඇතුළත් කරන්න', true);
+                    phoneInput.focus();
+                    return;
+                }
 
                 // Reset UI
                 document.getElementById('pairing-code-content').style.display = 'block';
                 document.getElementById('pairing-success-content').style.display = 'none';
+                const relinkWrap = document.getElementById('force-relink-wrap');
+                if (relinkWrap) relinkWrap.style.display = 'none';
                 if (pollingInterval) clearInterval(pollingInterval);
 
                 // Show processing spinner
                 const ogText = btnPairText.innerText;
                 const ogIcon = btnPairIcon.className;
-                btnPairText.innerText = 'Generating Code...';
+                btnPairText.innerText = forceFresh ? 'Resetting Session...' : 'Generating Code...';
                 btnPairIcon.className = 'fa-solid fa-circle-notch fa-spin';
 
-                fetchFromBackend(`/pair?number=${encodeURIComponent(rawVal)}&mode=android`)
+                const pairQuery = `/pair?number=${encodeURIComponent(normalizedNum)}&mode=auto${forceFresh ? '&force=1' : ''}`;
+                fetchFromBackend(pairQuery)
                     .then(async (res) => {
                         const body = await res.text();
                         if (!res.ok) throw new Error(body || 'Pairing failed');
@@ -2478,6 +2606,7 @@
                             resultBox.style.display = 'block';
                             document.getElementById('pairing-code-content').style.display = 'none';
                             document.getElementById('pairing-success-content').style.display = 'block';
+                            if (relinkWrap) relinkWrap.style.display = 'block';
                             showToast('දැනටමත් සම්බන්ධ වී ඇත!');
                             return;
                         }
@@ -2488,7 +2617,7 @@
                         resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
                         showToast('Pairing code generated successfully!');
-                        startStatusPolling(rawVal);
+                        startStatusPolling(normalizedNum);
                     })
                     .catch(err => {
                         console.error(err);
@@ -2590,8 +2719,8 @@
             </h2>
             <p id="cmd-modal-desc"
                 style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 14px;">
-                All commands work privately in your Self-Chat (You Number). Deleted messages and View-Once media arrive
-                automatically.
+                All commands work privately in your Self-Chat (You). Deleted messages arrive automatically; reply to any
+                View-Once photo/video/voice <b>before opening it</b> to receive it in your You chat.
             </p>
             <div
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 22px;">
