@@ -1,0 +1,19 @@
+{
+  "name": "WhatsApp Bot — Kaveez Automation",
+  "short_name": "WhatsApp Bot",
+  "description": "Free WhatsApp Automation Bot at bot.kaveesha.top — Offline Anti-Delete recovery, View-Once saver, Group Shield (.gpon/.gpoff), and YouTube, Facebook & TikTok MP4/MP3 downloader.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#050907",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "bot-favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

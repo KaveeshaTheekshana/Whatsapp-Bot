@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://bot.kaveesha.top/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bot.kaveesha.top/" />
+    <xhtml:link rel="alternate" hreflang="si-LK" href="https://bot.kaveesha.top/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bot.kaveesha.top/" />
+    <image:image>
+      <image:loc>https://bot.kaveesha.top/og-share-card.jpg</image:loc>
+      <image:title>Kaveez WhatsApp Bot — Anti-Delete, View-Once Saver &amp; Video Downloader</image:title>
+      <image:caption>Link WhatsApp Bot easily to your own number at bot.kaveesha.top for Anti-Delete recovery, View-Once saving, Group Shield, and YouTube, Facebook &amp; TikTok downloads.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bot.kaveesha.top/bot-favicon.png</image:loc>
+      <image:title>Kaveez WhatsApp Bot Official Logo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bot.kaveesha.top/assets/hero_kaveez.jpg</image:loc>
+      <image:title>Kaveez WhatsApp Automation System</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bot.kaveesha.top/assets/earth_horizon.jpg</image:loc>
+      <image:title>Link WhatsApp Bot via 8-Digit Pairing Code</image:title>
+    </image:image>
+  </url>
+</urlset>
